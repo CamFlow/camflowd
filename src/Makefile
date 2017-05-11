@@ -5,13 +5,13 @@ LIB = /usr/local/lib/provenancelib.a ../build/paho.mqtt.c/build/output/libpaho-m
 .SUFFIXES: .c
 
 all:
-	$(CCC) $(INCLUDES) publisher.c $(LIB) -o publisher.o $(CCFLAGS)
+	$(CCC) $(INCLUDES) service.c $(LIB) -o service.o $(CCFLAGS)
 
 debug:
-	$(CCC) $(INCLUDES) publisher.c $(LIB) -o publisher.o $(CCFLAGS) -g
+	$(CCC) $(INCLUDES) service.c $(LIB) -o service.o $(CCFLAGS) -g
 
 install:
-	cp --force ./publisher.o /usr/bin/camflow-provenance
+	cp --force ./service.o /usr/bin/camflow-provenance
 	mkdir -p /var/relay
 	cp --force ./camflow-provenance.service /etc/systemd/system/camflow-provenance.service
 	systemctl enable camflow-provenance.service
@@ -20,4 +20,4 @@ restart:
 	systemctl restart camflow-provenance.service
 
 clean:
-	rm -f publisher.o
+	rm -f service.o
