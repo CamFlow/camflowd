@@ -17,7 +17,6 @@
 #include <string.h>
 #include <sys/types.h>
 #include <unistd.h>
-#include <sys/syscall.h>
 #include <pthread.h>
 
 #include "provenancelib.h"
