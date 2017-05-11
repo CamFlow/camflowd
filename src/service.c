@@ -183,7 +183,6 @@ int main(int argc, char* argv[])
         mqtt_publish("keepalive", NULL, 0, false); // keep alive
       }
     }
-
     // never reached
     provenance_stop();
     stop_mqtt();
