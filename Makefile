@@ -20,7 +20,7 @@ mosquitto:
 
 install:
 	cd ./src && sudo $(MAKE) install
-	sudo cp --force ./camflow-mqtt.ini /etc/camflow-mqtt.ini
+	sudo cp --force ./camflow-service.ini /etc/camflow-service.ini
 
 restart:
 	cd ./src && sudo $(MAKE) restart
