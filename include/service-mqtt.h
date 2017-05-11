@@ -15,6 +15,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/syscall.h>
+#include <pthread.h>
 
 #include "MQTTClient.h"
 #include "service-config.h"
