@@ -1,4 +1,4 @@
-INCLUDES = -I../build/SimpleLogger -I../build/inih
+INCLUDES = -I../build/SimpleLogger -I../build/inih -I../include
 CCFLAGS = -g -O2 -fpic
 CCC = gcc
 LIB = /usr/local/lib/provenancelib.a ../build/paho.mqtt.c/build/output/libpaho-mqtt3c.so -lpthread ../build/SimpleLogger/libsimplog.a ../build/inih/extra/libinih.a -lz

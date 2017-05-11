@@ -11,11 +11,11 @@
 #include "provenancelib.h"
 #include "provenanceutils.h"
 #include "provenancePovJSON.h"
+#include "camflow-mqtt.h"
 #include "simplog.h"
 #include "ini.h"
 
-#define	LOG_PATH "/tmp/audit.log"
-#define CONFIG_PATH "/etc/camflow-mqtt.ini"
+#define CONFIG_PATH "/etc/camflow-service.ini"
 #define gettid() syscall(SYS_gettid)
 #define TIMEOUT         10000L
 
@@ -29,6 +29,7 @@ typedef struct{
   char address[PATH_MAX]; // assuming we could use unix socket
   char username[1024];
   char password[1024];
+	char log[PATH_MAX];
   char provenance_topic[MAX_TOPIC_LENGTH];
   char machine_topic[MAX_TOPIC_LENGTH];
   char client_id[MAX_MQTT_CLIENT_ID_LENGTH];
@@ -42,19 +43,16 @@ static int handler(void* user, const char* section, const char* name,
                    const char* value)
 {
     configuration* pconfig = (configuration*)user;
-
-    if(MATCH("mqtt", "qos")) {
+		if(MATCH("general", "log")){
+			strncpy(pconfig->log, value, PATH_MAX);
+		}else if(MATCH("mqtt", "qos")) {
       pconfig->qos = atoi(value);
-      simplog.writeLog(SIMPLOG_INFO, "MQTT QOS %d", pconfig->qos);
     }else if (MATCH("mqtt", "address")) {
       strncpy(pconfig->address, value, PATH_MAX);
-      simplog.writeLog(SIMPLOG_INFO, "MQTT address %s", pconfig->address);
     }else if(MATCH("mqtt", "username")){
       strncpy(pconfig->username, value, 1024);
-      simplog.writeLog(SIMPLOG_INFO, "MQTT username %s", pconfig->username);
     }else if(MATCH("mqtt", "password")){
       strncpy(pconfig->password, value, 1024);
-      simplog.writeLog(SIMPLOG_INFO, "MQTT password %s", pconfig->password);
     } else{
         return 0;  /* unknown section/name, error */
     }
@@ -134,11 +132,11 @@ void mqtt_publish(char* topic, char* payload, int qos, bool retained){
 }
 
 void _init_logs( void ){
-  simplog.setLogFile(LOG_PATH);
+  simplog.setLogFile(pconfig->log);
   simplog.setLineWrap(false);
   simplog.setLogSilentMode(true);
   simplog.setLogDebugLevel(SIMPLOG_VERBOSE);
-  provenance_opaque_file(LOG_PATH, true);
+  provenance_opaque_file(pconfig->log, true);
 }
 
 void init( void ){
@@ -274,16 +272,15 @@ int main(int argc, char* argv[])
     uint32_t machine_id;
     char json[4096];
 
-    _init_logs();
-    simplog.writeLog(SIMPLOG_INFO, "MQTT Provenance service");
-    simplog.writeLog(SIMPLOG_INFO, "Main process pid: %ld", getpid());
-
-    memset(&config, 0, sizeof(configuration));
-
+		memset(&config, 0, sizeof(configuration));
     if (ini_parse(CONFIG_PATH, handler, &config) < 0) {
         simplog.writeLog(SIMPLOG_ERROR, "Can't load '%s'", CONFIG_PATH);
         exit(-1);
     }
+
+    _init_logs();
+    simplog.writeLog(SIMPLOG_INFO, "MQTT Provenance service");
+    simplog.writeLog(SIMPLOG_INFO, "Main process pid: %ld", getpid());
 
     rc = provenance_get_machine_id(&machine_id);
     if(rc<0){
