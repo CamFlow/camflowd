@@ -32,4 +32,8 @@ static inline void _init_logs( void ){
   fflush(__log_fp);
   provenance_opaque_file(__service_config.log, true);
 }
+
+static inline void log_print_json(char* json){
+  log("%s", json);
+}
 #endif

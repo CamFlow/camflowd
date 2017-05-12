@@ -147,29 +147,35 @@ int main(int argc, char* argv[])
     printf("%s\n", __service_config.log);
     _init_logs();
     printf("%s\n", __service_config.log);
-    log("MQTT Provenance service");
-    log("Main process pid: %ld", getpid());
+    log("Output option: %s", __service_config.output);
 
-    init_mqtt();
-    mqtt_connect(true);
-
-    publish_json(__service_config.machine_topic, machine_description_json(json), true);
-
+    if(IS_CONFIG_MQTT()){
+      log("MQTT Provenance service");
+      log("Main process pid: %ld", getpid());
+      init_mqtt();
+      mqtt_connect(true);
+      publish_json(__service_config.machine_topic, machine_description_json(json), true);
+      set_ProvJSON_callback(mqtt_print_json);
+    }else{
+      log_print_json(machine_description_json(json));
+      set_ProvJSON_callback(log_print_json);
+    }
     rc = provenance_register(&ops);
     if(rc){
       log("Failed registering audit operation.");
       exit(rc);
     }
-    set_ProvJSON_callback(mqtt_print_json);
     while(1){
       sleep(1);
       flush_json();
       if(i++%10==0){
-        mqtt_publish("keepalive", NULL, 0, false); // keep alive
+        if(IS_CONFIG_MQTT())
+          mqtt_publish("keepalive", NULL, 0, false); // keep alive
       }
     }
     // never reached
     provenance_stop();
-    stop_mqtt();
+    if(IS_CONFIG_MQTT())
+      stop_mqtt();
     return 0;
 }

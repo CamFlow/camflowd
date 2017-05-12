@@ -21,6 +21,7 @@
 #define CONFIG_PATH "/etc/camflow-service.ini"
 #define MAX_TOPIC_LENGTH 256
 #define MAX_MQTT_CLIENT_ID_LENGTH 23 // see https://www.eclipse.org/paho/files/mqttdoc/Cclient/_m_q_t_t_client_8h.html#a5cb44bc0e06bcc95a314d51320a0cd1b
+#define MAX_OUTPUT_LENGTH 256
 
 typedef struct{
   int qos;
@@ -28,6 +29,7 @@ typedef struct{
   char username[1024];
   char password[1024];
 	char log[PATH_MAX];
+  char output[MAX_OUTPUT_LENGTH];
   char provenance_topic[MAX_TOPIC_LENGTH];
   char machine_topic[MAX_TOPIC_LENGTH];
   char client_id[MAX_MQTT_CLIENT_ID_LENGTH];
@@ -43,6 +45,8 @@ static int handler(void* user, const char* section, const char* name,
     configuration* pconfig = (configuration*)user;
 		if(MATCH("general", "log")){
 			strncpy(pconfig->log, value, PATH_MAX);
+		}else if(MATCH("general", "output")){
+			strncpy(pconfig->output, value, MAX_OUTPUT_LENGTH);
 		}else if(MATCH("mqtt", "qos")) {
       pconfig->qos = atoi(value);
     }else if (MATCH("mqtt", "address")) {
@@ -64,4 +68,6 @@ static inline void read_config(void){
       exit(-1);
   }
 }
+
+#define IS_CONFIG_MQTT() (strcmp(__service_config.output, "mqtt") == 0)
 #endif
