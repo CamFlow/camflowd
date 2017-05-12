@@ -4,23 +4,11 @@
 
 | Branch | Status                                                                                  | SonarQube |
 |--------|-----------------------------------------------------------------------------------------|-----------|
-| master | [![Master Build Status](https://api.travis-ci.org/CamFlow/mqtt-publisher-service.svg?branch=master)](https://travis-ci.org/CamFlow/mqtt-publisher-service/branches)  |[![SonarQube Status](https://sonarqube.com//api/badges/gate?key=camflow%3Amqtt)](https://sonarqube.com/dashboard?id=camflow%3Amqtt)   |
-| dev    | [![Dev Build Status](https://api.travis-ci.org/CamFlow/mqtt-publisher-service.svg?branch=dev)](https://travis-ci.org/CamFlow/mqtt-publisher-service/branches)      |[![SonarQube Status](https://sonarqube.com//api/badges/gate?key=camflow%3Amqtt%3Adev)](https://sonarqube.com/dashboard?id=camflow%3Amqtt%3Adev)   |
+| master | [![Master Build Status](https://api.travis-ci.org/CamFlow/camflow-service.svg?branch=master)](https://travis-ci.org/CamFlow/camflow-service/branches)  |[![SonarQube Status](https://sonarqube.com//api/badges/gate?key=camflow%3Amqtt)](https://sonarqube.com/dashboard?id=camflow%3Amqtt)   |
+| dev    | [![Dev Build Status](https://api.travis-ci.org/CamFlow/camflow-service.svg?branch=dev)](https://travis-ci.org/CamFlow/camflow-service/branches)      |[![SonarQube Status](https://sonarqube.com//api/badges/gate?key=camflow%3Amqtt%3Adev)](https://sonarqube.com/dashboard?id=camflow%3Amqtt%3Adev)   |
 
 Automated Travis test run the following operation:
 - run [SonarQube](https://sonarqube.com).
-
-## Install
-
-We assume CamFlow has been installed on your Linux machine, please see instruction [here](https://github.com/CamFlow/camflow-install) (bare-OS installation), or [here](https://github.com/CamFlow/vagrant) (setting up a guest VM).
-
-``` SHELL
-git clone https://github.com/tfjmp/mqtt-publisher-service.git
-cd mqtt-publisher-service
-make prepare
-make all
-make install
-```
 
 ## Configuration
 
