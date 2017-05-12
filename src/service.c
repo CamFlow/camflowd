@@ -137,21 +137,6 @@ struct provenance_ops ops = {
   .log_error=&log_error
 };
 
-void publish_json(char* topic, const char* json, bool retain){
-  size_t len;
-  char* buf;
-  const size_t inlen = strlen(json);
-  len = compress64encodeBound(inlen);
-  buf = (char*)malloc(len);
-  compress64encode(json, inlen, buf, len);
-  mqtt_publish(topic, buf, __service_config.qos, retain);
-  free(buf);
-}
-
-void print_json(char* json){
-  publish_json(__service_config.provenance_topic, json, false);
-}
-
 int main(int argc, char* argv[])
 {
     int rc;
@@ -175,7 +160,7 @@ int main(int argc, char* argv[])
       log("Failed registering audit operation.");
       exit(rc);
     }
-    set_ProvJSON_callback(print_json);
+    set_ProvJSON_callback(mqtt_print_json);
     while(1){
       sleep(1);
       flush_json();

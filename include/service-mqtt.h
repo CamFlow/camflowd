@@ -123,4 +123,19 @@ static inline void mqtt_publish(char* topic, char* payload, int qos, bool retain
     }
   }while(rc != MQTTCLIENT_SUCCESS);
 }
+
+static inline void publish_json(char* topic, const char* json, bool retain){
+  size_t len;
+  char* buf;
+  const size_t inlen = strlen(json);
+  len = compress64encodeBound(inlen);
+  buf = (char*)malloc(len);
+  compress64encode(json, inlen, buf, len);
+  mqtt_publish(topic, buf, __service_config.qos, retain);
+  free(buf);
+}
+
+static inline void mqtt_print_json(char* json){
+  publish_json(__service_config.provenance_topic, json, false);
+}
 #endif
