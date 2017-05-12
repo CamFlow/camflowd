@@ -5,8 +5,6 @@ prepare:
 	mkdir -p build
 	cd ./build && git clone https://github.com/benhoyt/inih.git
 	cd ./build/inih/extra && $(MAKE) -f Makefile.static default
-	cd ./build && git clone https://github.com/ntpeters/SimpleLogger.git
-	cd ./build/SimpleLogger && $(MAKE) all
 	cd ./build && git clone https://github.com/eclipse/paho.mqtt.c.git
 	cd ./build/paho.mqtt.c && git checkout tags/v1.1.0
 	cd ./build/paho.mqtt.c && sudo $(MAKE) all
