@@ -71,7 +71,7 @@ void log_disc(struct disc_node_struct* node){
     case AGT_DISC:
       append_agent(disc_to_json(node));
       break;
-    case ENT_DISC:
+    //case ENT_DISC: //default
     default:
       append_entity(disc_to_json(node));
       break;
@@ -137,7 +137,7 @@ struct provenance_ops ops = {
   .log_error=&log_error
 };
 
-int main(int argc, char* argv[])
+int main(void)
 {
     int rc;
     uint32_t i;
@@ -168,10 +168,9 @@ int main(int argc, char* argv[])
     while(1){
       sleep(1);
       flush_json();
-      if(i++%10==0){
-        if(IS_CONFIG_MQTT())
-          mqtt_publish("keepalive", NULL, 0, false); // keep alive
-      }
+      if(i%10==0 && IS_CONFIG_MQTT())
+        mqtt_publish("keepalive", NULL, 0, false); // keep alive
+      i++;
     }
     // never reached
     provenance_stop();
