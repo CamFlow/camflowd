@@ -1,4 +1,4 @@
-# MQTT publisher service
+# Userspace Provenance Service
 
 ## Build Status
 
@@ -12,16 +12,20 @@ Automated Travis test run the following operation:
 
 ## Configuration
 
-The file `/etc/camflow-mqtt.ini` allows to modify the configuration of the MQTT publisher service. The service need to be restarted for a new configuration to be applied (through `systemctl restart camflow-provenance.service`).
+The file `/etc/camflow-service.ini` allows to modify the configuration of the MQTT publisher service. The service need to be restarted for a new configuration to be applied (through `systemctl restart camflow-provenance.service`).
 
 ``` INI
+[general]
+; output=mqtt
+output=log
+log=/tmp/audit.log
+
 [mqtt]
-address=tcp://m12.cloudmqtt.com:17065
-client_id=ExampleClientPub
+address=m12.cloudmqtt.com:17065
 username=camflow
 password=test
 ; message delivered: 0 at most once, 1 at least once, 2 exactly once
-qos=1
+qos=2
 ```
 
 ## Checking logs
