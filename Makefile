@@ -1,3 +1,5 @@
+version=0.1.1
+
 all:
 	cd ./src && $(MAKE) all
 
@@ -19,6 +21,17 @@ mosquitto:
 install:
 	cd ./src && sudo $(MAKE) install
 	sudo cp --force ./camflow-service.ini /etc/camflow-service.ini
+
+rpm:
+	mkdir -p ~/rpmbuild/{RPMS,SRPMS,BUILD,SOURCES,SPECS,tmp}
+	cp -f ./camflow-service.spec ~/rpmbuild/SPECS/camflow-service.spec
+	rpmbuild -bb camflow-service.spec
+	mkdir -p output
+	cp ~/rpmbuild/RPMS/x86_64/* ./output
+
+publish:
+	cd ./output && package_cloud push camflow/provenance/fedora/25 camflow-service-$(version)-1.x86_64.rpm
+
 
 restart:
 	cd ./src && sudo $(MAKE) restart
