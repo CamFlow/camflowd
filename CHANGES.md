@@ -6,7 +6,7 @@
 ### v0.1.1
 
 ```
-- 
+- Build against paho.mqtt static library.
 ```
 
 ### v0.1.0

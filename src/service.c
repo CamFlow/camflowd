@@ -142,7 +142,6 @@ int main(void)
     int rc;
     uint32_t i;
     char json[4096];
-    printf("Hello world!\n");
     read_config();
     printf("%s\n", __service_config.log);
     _init_logs();
