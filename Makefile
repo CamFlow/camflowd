@@ -1,4 +1,5 @@
 version=0.1.1
+CCC = gcc
 
 all:
 	cd ./src && $(MAKE) all
@@ -21,9 +22,9 @@ SED_COMMAND = sed \
 
 build_paho:
 	$(SED_COMMAND) <$(PAHO_SRC)/VersionInfo.h.in >$(PAHO_SRC)/VersionInfo.h
-	cc -c -g -fPIC -Os -Wall -I$(PAHO_SRC) $(PAHO_FILES)
+	$(CCC) -c -g -fPIC -Os -Wall -I$(PAHO_SRC) $(PAHO_FILES)
 	mkdir -p output
-	ar -crU output/libpaho-mqtt3c.a $(PAHO_EXEC)
+	ar rvs output/libpaho-mqtt3c.a $(PAHO_EXEC)
 	rm -rf *.o
 
 prepare: checkout build_paho
