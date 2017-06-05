@@ -13,7 +13,7 @@ checkout:
 
 PAHO_SRC= ./build/paho.mqtt.c/src
 PAHO_FILES = $(wildcard $(PAHO_SRC)/*.c)
-PAHO_EXEC = $(wildcard ./*.o)
+PAHO_EXEC = $(wildcard *.o)
 
 release.version = 1.1.0
 SED_COMMAND = sed \
@@ -25,7 +25,6 @@ build_paho:
 	$(CCC) -c -g -fPIC -Os -Wall -I$(PAHO_SRC) $(PAHO_FILES)
 	mkdir -p output
 	ar rvs output/libpaho-mqtt3c.a $(PAHO_EXEC)
-	rm -rf *.o
 
 prepare: checkout build_paho
 
