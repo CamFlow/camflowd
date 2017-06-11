@@ -27,7 +27,9 @@ build_paho:
 	ar rvs output/libpaho-mqtt3c.a $(PAHO_EXEC)
 	ar rvs output/libpaho-mqtt3c.a $(PAHO_EXEC)
 
-prepare: checkout build_paho
+prepare: checkout
+	$(MAKE) build_paho
+	$(MAKE) build_paho
 
 mosquitto:
 	sudo cp -f ./mosquitto.conf /etc/mosquitto/mosquitto.conf
