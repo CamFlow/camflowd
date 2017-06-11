@@ -1,5 +1,5 @@
 Summary: CamFlow publisher service
-Name: camflow-service
+Name: camflowd
 Version: 0.1.1
 Release: 1
 Group: audit/camflow
@@ -16,9 +16,9 @@ rm -rf $RPM_BUILD_ROOT
 mkdir -p $RPM_BUILD_ROOT/usr/bin
 mkdir -p $RPM_BUILD_ROOT/etc/systemd/system
 cd $RPM_BUILD_ROOT
-cp -f %{SOURCEURL0}/src/service.o ./usr/bin/camflow-provenance
-cp -f %{SOURCEURL0}/src/camflow-provenance.service ./etc/systemd/system/camflow-provenance.service
-cp -f %{SOURCEURL0}/camflow-service.ini ./etc/camflow-service.ini
+cp -f %{SOURCEURL0}/src/service.o ./usr/bin/camflowd
+cp -f %{SOURCEURL0}/src/camflowd.service ./etc/systemd/system/camflowd.service
+cp -f %{SOURCEURL0}/camflowd.ini ./etc/camflowd.ini
 
 
 %clean
@@ -26,7 +26,7 @@ rm -r -f "$RPM_BUILD_ROOT"
 
 %files
 %defattr(755,root,root)
-/usr/bin/camflow-provenance
+/usr/bin/camflowd
 %defattr(644,root,root)
-/etc/systemd/system/camflow-provenance.service
-/etc/camflow-service.ini
+/etc/systemd/system/camflowd.service
+/etc/camflowd.ini
