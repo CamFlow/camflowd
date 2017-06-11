@@ -25,6 +25,7 @@ build_paho:
 	$(CCC) -c -g -fPIC -Os -Wall -I$(PAHO_SRC) $(PAHO_FILES)
 	mkdir -p output
 	ar rvs output/libpaho-mqtt3c.a $(PAHO_EXEC)
+	ar rvs output/libpaho-mqtt3c.a $(PAHO_EXEC)
 
 prepare: checkout build_paho
 
