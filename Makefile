@@ -21,10 +21,11 @@ SED_COMMAND = sed \
 	-e "s/@BUILD_TIMESTAMP@/$(shell date)/g"
 
 build_paho:
+	mkdir -p output
 	$(SED_COMMAND) <$(PAHO_SRC)/VersionInfo.h.in >$(PAHO_SRC)/VersionInfo.h
 	$(CCC) -c -g -fPIC -Os -Wall -I$(PAHO_SRC) $(PAHO_FILES)
-	mkdir -p output
 	ar rvs output/libpaho-mqtt3c.a $(PAHO_EXEC)
+	$(CCC) -c -g -fPIC -Os -Wall -I$(PAHO_SRC) $(PAHO_FILES)
 	ar rvs output/libpaho-mqtt3c.a $(PAHO_EXEC)
 
 prepare: checkout
