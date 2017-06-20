@@ -17,6 +17,7 @@
 #include <string.h>
 #include <sys/types.h>
 #include <unistd.h>
+#include <syslog.h>
 
 #include "provenancelib.h"
 #include "provenanceutils.h"
@@ -26,9 +27,11 @@
 #include "service-log.h"
 #include "service-mqtt.h"
 
+#define APP_NAME "camflowd"
+
 void init( void ){
   pid_t tid = gettid();
-  log("Init audit thread (%ld)", tid);
+  syslog(LOG_INFO, "Init audit thread (%ld)", tid);
 }
 
 void log_str(struct str_struct* data){
@@ -112,7 +115,7 @@ void log_packet_content(struct pckcnt_struct* cnt){
 }
 
 void log_error(char* error){
-  log("From library: %s", error);
+  syslog(LOG_ERR, "From library: %s", error);
 }
 
 struct provenance_ops ops = {
@@ -142,15 +145,21 @@ int main(void)
     int rc;
     uint32_t i;
     char json[4096];
+    setlogmask(LOG_UPTO(LOG_INFO));
+    openlog(APP_NAME, LOG_CONS | LOG_PID | LOG_NDELAY, LOG_DAEMON);
+    if(!provenance_is_present()) {
+      syslog(LOG_ERR, "CamFlow not present in current kernel.");
+      exit(-1);
+    }
     read_config();
-    printf("%s\n", __service_config.log);
+    syslog(LOG_INFO, "%s\n", __service_config.log);
     _init_logs();
-    printf("%s\n", __service_config.log);
-    log("Output option: %s", __service_config.output);
+    syslog(LOG_INFO, "%s\n", __service_config.log);
+    syslog(LOG_INFO, "Output option: %s", __service_config.output);
 
     if(IS_CONFIG_MQTT()){
-      log("MQTT Provenance service");
-      log("Main process pid: %ld", getpid());
+      syslog(LOG_INFO, "MQTT Provenance service");
+      syslog(LOG_INFO, "Main process pid: %ld", getpid());
       init_mqtt();
       mqtt_connect(true);
       publish_json(__service_config.machine_topic, machine_description_json(json), true);
@@ -161,7 +170,7 @@ int main(void)
     }
     rc = provenance_register(&ops);
     if(rc){
-      log("Failed registering audit operation.");
+      syslog(LOG_ERR, "Failed registering audit operation.");
       exit(rc);
     }
     while(1){
