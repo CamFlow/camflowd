@@ -140,20 +140,23 @@ struct provenance_ops ops = {
   .log_error=&log_error
 };
 
+static inline void __init_syslog(void){
+  setlogmask(LOG_UPTO(LOG_INFO));
+  openlog(APP_NAME, LOG_CONS | LOG_PID | LOG_NDELAY, LOG_DAEMON);
+}
+
 int main(void)
 {
     int rc;
     uint32_t i;
     char json[4096];
-    setlogmask(LOG_UPTO(LOG_INFO));
-    openlog(APP_NAME, LOG_CONS | LOG_PID | LOG_NDELAY, LOG_DAEMON);
+    __init_syslog();
     if(!provenance_is_present()) {
       syslog(LOG_ERR, "CamFlow not present in current kernel.");
       exit(-1);
     }
     read_config();
     syslog(LOG_INFO, "%s\n", __service_config.log);
-    _init_logs();
     syslog(LOG_INFO, "%s\n", __service_config.log);
     syslog(LOG_INFO, "Output option: %s", __service_config.output);
 
@@ -165,6 +168,7 @@ int main(void)
       publish_json(__service_config.machine_topic, machine_description_json(json), true);
       set_ProvJSON_callback(mqtt_print_json);
     }else{
+      _init_logs();
       log_print_json(machine_description_json(json));
       set_ProvJSON_callback(log_print_json);
     }
