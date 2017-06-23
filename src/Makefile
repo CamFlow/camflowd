@@ -1,7 +1,7 @@
-INCLUDES = -I../build/inih -I../include
+INCLUDES = -I../build/inih -I../include -I../build/paho.mqtt.c/src
 CCFLAGS = -g -O2 -fpic
 CCC = gcc
-LIB = /usr/local/lib/provenancelib.a ../build/paho.mqtt.c/build/output/libpaho-mqtt3c.so -lpthread ../build/inih/extra/libinih.a -lz
+LIB = /usr/local/lib/provenancelib.a  ../output/libpaho-mqtt3c.a -lpthread ../build/inih/extra/libinih.a -lz
 .SUFFIXES: .c
 
 all:
@@ -11,13 +11,13 @@ debug:
 	$(CCC) $(INCLUDES) service.c $(LIB) -o service.o $(CCFLAGS) -g
 
 install:
-	cp --force ./service.o /usr/bin/camflow-provenance
+	cp --force ./service.o /usr/bin/camflowd
 	mkdir -p /var/relay
-	cp --force ./camflow-provenance.service /etc/systemd/system/camflow-provenance.service
-	systemctl enable camflow-provenance.service
+	cp --force ./camflowd.service /etc/systemd/system/camflowd.service
+	systemctl enable camflowd.service
 
 restart:
-	systemctl restart camflow-provenance.service
+	systemctl restart camflowd.service
 
 clean:
 	rm -f service.o

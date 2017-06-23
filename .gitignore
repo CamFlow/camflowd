@@ -36,3 +36,5 @@ build/*
 
 #test output
 /test/output.txt
+
+*.rpm

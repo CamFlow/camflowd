@@ -17,10 +17,10 @@
 #include <string.h>
 #include <sys/syscall.h>
 #include <pthread.h>
+#include <syslog.h>
 
 #include "MQTTClient.h"
 #include "service-config.h"
-#include "service-log.h"
 
 #define gettid() syscall(SYS_gettid)
 #define TIMEOUT         10000L
@@ -32,14 +32,14 @@ static inline void init_mqtt(void){
   uint32_t machine_id;
   rc = provenance_get_machine_id(&machine_id);
   if(rc<0){
-    log("Failed retrieving machine ID.");
+    syslog(LOG_ERR, "Failed retrieving machine ID.");
     exit(rc);
   }
   snprintf(__service_config.provenance_topic, MAX_TOPIC_LENGTH, "camflow/provenance/%u", machine_id);
   snprintf(__service_config.machine_topic, MAX_TOPIC_LENGTH, "camflow/machines/%u", machine_id);
   snprintf(__service_config.client_id, MAX_MQTT_CLIENT_ID_LENGTH, "%u", machine_id); // should be no more than 23
-  log("Provenance topic: %s.", __service_config.provenance_topic);
-  log("Machine topic: %s.", __service_config.machine_topic);
+  syslog(LOG_INFO, "Provenance topic: %s.", __service_config.provenance_topic);
+  syslog(LOG_INFO, "Machine topic: %s.", __service_config.machine_topic);
   MQTTClient_create(&__service_client,
     __service_config.address,
     __service_config.client_id,
@@ -66,13 +66,13 @@ static inline void mqtt_connect(bool cleansession){
   conn_opts.username = __service_config.username;
   conn_opts.password = __service_config.password;
 
-  log("Connecting to MQTT... (%ld)", tid);
+  syslog(LOG_INFO, "Connecting to MQTT... (%ld)", tid);
   if ((rc = MQTTClient_connect(__service_client, &conn_opts)) < 0)
   {
-      log("Failed to connect, return code %d\n", rc);
+      syslog(LOG_ERR, "Failed to connect, return code %d\n", rc);
       exit(-1);
   }
-  log("Connected (%ld)", tid);
+  syslog(LOG_INFO, "Connected (%ld)", tid);
 }
 
 static pthread_mutex_t l_mqtt = PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP;
@@ -114,11 +114,11 @@ static inline void mqtt_publish(char* topic, char* payload, int qos, bool retain
     pthread_mutex_unlock(&l_mqtt);
 
     if(rc != MQTTCLIENT_SUCCESS){
-      log("MQTT disconnected error: %d (%ld)", rc, tid);
+      syslog(LOG_ERR, "MQTT disconnected error: %d (%ld)", rc, tid);
       retry++;
     }
     if(retry > 10){
-      log("Failed connect retry (%ld)", tid);
+      syslog(LOG_ERR, "Failed connect retry (%ld)", tid);
       break;
     }
   }while(rc != MQTTCLIENT_SUCCESS);

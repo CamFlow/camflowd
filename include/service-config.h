@@ -18,7 +18,7 @@
 
 #include "ini.h"
 
-#define CONFIG_PATH "/etc/camflow-service.ini"
+#define CONFIG_PATH "/etc/camflowd.ini"
 #define MAX_TOPIC_LENGTH 256
 #define MAX_MQTT_CLIENT_ID_LENGTH 23 // see https://www.eclipse.org/paho/files/mqttdoc/Cclient/_m_q_t_t_client_8h.html#a5cb44bc0e06bcc95a314d51320a0cd1b
 #define MAX_OUTPUT_LENGTH 256

@@ -31,6 +31,5 @@ qos=2
 ## Checking logs
 
 ```
-cat /tmp/audit.log # CamFlow service logs
-cat /tmp/mosquitto.log # Mosquitto logs
+journalctl -b | grep camflowd
 ```

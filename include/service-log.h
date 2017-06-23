@@ -15,25 +15,25 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <syslog.h>
 
 #include "service-config.h"
 
 static FILE *__log_fp=NULL;
 
-#define log(fmt, ...) do{fprintf(__log_fp, fmt"\n", ##__VA_ARGS__);fflush(__log_fp);}while(0)
-
 static inline void _init_logs( void ){
   __log_fp = fopen(__service_config.log, "a+");
   if(!__log_fp){
-    printf("Cannot open file\n");
+    syslog(LOG_ERR, "Cannot open file\n");
     exit(-1);
   }
-  fprintf(__log_fp, "Starting audit service...\n");
-  fflush(__log_fp);
+  syslog(LOG_INFO, "Starting audit service...\n");
   provenance_opaque_file(__service_config.log, true);
 }
 
 static inline void log_print_json(char* json){
-  log("%s", json);
+  fprintf(__log_fp, json);
+  fprintf(__log_fp, "\n");
+  fflush(__log_fp);
 }
 #endif
