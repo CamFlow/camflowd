@@ -114,6 +114,10 @@ void log_packet_content(struct pckcnt_struct* cnt){
   append_entity(pckcnt_to_json(cnt));
 }
 
+void log_arg(struct arg_struct* arg){
+  append_entity(arg_to_json(arg));
+}
+
 void log_error(char* error){
   syslog(LOG_ERR, "From library: %s", error);
 }
@@ -137,6 +141,7 @@ struct provenance_ops ops = {
   .log_iattr=&log_iattr,
   .log_xattr=&log_xattr,
   .log_packet_content=&log_packet_content,
+  .log_arg=&log_arg,
   .log_error=&log_error
 };
 
