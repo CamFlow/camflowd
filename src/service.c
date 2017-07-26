@@ -146,7 +146,7 @@ struct provenance_ops ops = {
 };
 
 struct provenance_ops ops_null = {
-  .init=NULL,
+  .init=&init,
   .log_unknown_relation=NULL,
   .log_derived=NULL,
   .log_generated=NULL,
@@ -165,7 +165,7 @@ struct provenance_ops ops_null = {
   .log_xattr=NULL,
   .log_packet_content=NULL,
   .log_arg=NULL,
-  .log_error=NULL
+  .log_error=&log_error
 };
 
 static inline void __init_syslog(void){
@@ -200,7 +200,7 @@ int main(void)
       log_print_json(machine_description_json(json));
       set_ProvJSON_callback(log_print_json);
     }
-    
+
     if (IS_CONFIG_NULL())
       rc = provenance_register(&ops_null);
     else
@@ -212,7 +212,8 @@ int main(void)
     }
     while(1){
       sleep(1);
-      flush_json();
+      if (!IS_CONFIG_NULL())
+        flush_json();
       if(i%10==0 && IS_CONFIG_MQTT())
         mqtt_publish("keepalive", NULL, 0, false); // keep alive
       i++;
