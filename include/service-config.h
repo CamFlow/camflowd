@@ -70,4 +70,6 @@ static inline void read_config(void){
 }
 
 #define IS_CONFIG_MQTT() (strcmp(__service_config.output, "mqtt") == 0)
+#define IS_CONFIG_LOG() (strcmp(__service_config.output, "log") == 0)
+#define IS_CONFIG_NULL() (strcmp(__service_config.output, "null") == 0)
 #endif

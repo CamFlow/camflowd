@@ -145,6 +145,29 @@ struct provenance_ops ops = {
   .log_error=&log_error
 };
 
+struct provenance_ops ops_null = {
+  .init=NULL,
+  .log_unknown_relation=NULL,
+  .log_derived=NULL,
+  .log_generated=NULL,
+  .log_used=NULL,
+  .log_informed=NULL,
+  .log_task=NULL,
+  .log_inode=NULL,
+  .log_str=NULL,
+  .log_disc=NULL,
+  .log_msg=NULL,
+  .log_shm=NULL,
+  .log_packet=NULL,
+  .log_address=NULL,
+  .log_file_name=NULL,
+  .log_iattr=NULL,
+  .log_xattr=NULL,
+  .log_packet_content=NULL,
+  .log_arg=NULL,
+  .log_error=NULL
+};
+
 static inline void __init_syslog(void){
   setlogmask(LOG_UPTO(LOG_INFO));
   openlog(APP_NAME, LOG_CONS | LOG_PID | LOG_NDELAY, LOG_DAEMON);
@@ -172,12 +195,17 @@ int main(void)
       mqtt_connect(true);
       publish_json(__service_config.machine_topic, machine_description_json(json), true);
       set_ProvJSON_callback(mqtt_print_json);
-    }else{
+    }else if(IS_CONFIG_LOG()){
       _init_logs();
       log_print_json(machine_description_json(json));
       set_ProvJSON_callback(log_print_json);
     }
-    rc = provenance_register(&ops);
+    
+    if (IS_CONFIG_NULL())
+      rc = provenance_register(&ops_null);
+    else
+      rc = provenance_register(&ops);
+
     if(rc){
       syslog(LOG_ERR, "Failed registering audit operation.");
       exit(rc);
