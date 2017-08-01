@@ -19,7 +19,7 @@
 #include <unistd.h>
 #include <syslog.h>
 
-#include "provenancelib.h"
+#include "provenance.h"
 #include "provenanceutils.h"
 #include "provenancePovJSON.h"
 
