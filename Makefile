@@ -1,4 +1,4 @@
-version=0.1.1
+version=0.1.2
 CCC = gcc
 
 all:
@@ -49,7 +49,7 @@ rpm:
 	cp ~/rpmbuild/RPMS/x86_64/* ./output
 
 publish:
-	cd ./output && package_cloud push camflow/provenance/fedora/25 camflowd-$(version)-1.x86_64.rpm
+	cd ./output && package_cloud push camflow/provenance/fedora/26 camflowd-$(version)-1.x86_64.rpm
 
 
 restart:

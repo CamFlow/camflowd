@@ -19,7 +19,7 @@
 #include <unistd.h>
 #include <syslog.h>
 
-#include "provenancelib.h"
+#include "provenance.h"
 #include "provenanceutils.h"
 #include "provenancePovJSON.h"
 
@@ -114,6 +114,10 @@ void log_packet_content(struct pckcnt_struct* cnt){
   append_entity(pckcnt_to_json(cnt));
 }
 
+void log_arg(struct arg_struct* arg){
+  append_entity(arg_to_json(arg));
+}
+
 void log_error(char* error){
   syslog(LOG_ERR, "From library: %s", error);
 }
@@ -137,6 +141,30 @@ struct provenance_ops ops = {
   .log_iattr=&log_iattr,
   .log_xattr=&log_xattr,
   .log_packet_content=&log_packet_content,
+  .log_arg=&log_arg,
+  .log_error=&log_error
+};
+
+struct provenance_ops ops_null = {
+  .init=&init,
+  .log_unknown_relation=NULL,
+  .log_derived=NULL,
+  .log_generated=NULL,
+  .log_used=NULL,
+  .log_informed=NULL,
+  .log_task=NULL,
+  .log_inode=NULL,
+  .log_str=NULL,
+  .log_disc=NULL,
+  .log_msg=NULL,
+  .log_shm=NULL,
+  .log_packet=NULL,
+  .log_address=NULL,
+  .log_file_name=NULL,
+  .log_iattr=NULL,
+  .log_xattr=NULL,
+  .log_packet_content=NULL,
+  .log_arg=NULL,
   .log_error=&log_error
 };
 
@@ -167,19 +195,25 @@ int main(void)
       mqtt_connect(true);
       publish_json(__service_config.machine_topic, machine_description_json(json), true);
       set_ProvJSON_callback(mqtt_print_json);
-    }else{
+    }else if(IS_CONFIG_LOG()){
       _init_logs();
       log_print_json(machine_description_json(json));
       set_ProvJSON_callback(log_print_json);
     }
-    rc = provenance_register(&ops);
+
+    if (IS_CONFIG_NULL())
+      rc = provenance_register(&ops_null);
+    else
+      rc = provenance_register(&ops);
+
     if(rc){
       syslog(LOG_ERR, "Failed registering audit operation.");
       exit(rc);
     }
     while(1){
       sleep(1);
-      flush_json();
+      if (!IS_CONFIG_NULL())
+        flush_json();
       if(i%10==0 && IS_CONFIG_MQTT())
         mqtt_publish("keepalive", NULL, 0, false); // keep alive
       i++;
