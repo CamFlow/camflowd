@@ -1,6 +1,6 @@
 Summary: CamFlow publisher service
 Name: camflowd
-Version: 0.1.1
+Version: 0.1.2
 Release: 1
 Group: audit/camflow
 License: GPLv3
