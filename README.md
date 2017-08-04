@@ -4,8 +4,8 @@
 
 | Branch | Status                                                                                  |
 |--------|-----------------------------------------------------------------------------------------|
-| master | [![Master Build Status](https://api.travis-ci.org/CamFlow/camflow-service.svg?branch=master)](https://travis-ci.org/CamFlow/camflow-service/branches)  |
-| dev    | [![Dev Build Status](https://api.travis-ci.org/CamFlow/camflow-service.svg?branch=dev)](https://travis-ci.org/CamFlow/camflow-service/branches)      |
+| master | [![Master Build Status](https://api.travis-ci.org/CamFlow/camflowd.svg?branch=master)](https://travis-ci.org/CamFlow/camflow-service/branches)  |
+| dev    | [![Dev Build Status](https://api.travis-ci.org/CamFlow/camflowd.svg?branch=dev)](https://travis-ci.org/CamFlow/camflow-service/branches)      |
 
 Automated Travis test run the following operation:
 - run [SonarQube](https://sonarqube.com).
