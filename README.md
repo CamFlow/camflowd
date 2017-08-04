@@ -2,10 +2,10 @@
 
 ## Build Status
 
-| Branch | Status                                                                                  | SonarQube |
-|--------|-----------------------------------------------------------------------------------------|-----------|
-| master | [![Master Build Status](https://api.travis-ci.org/CamFlow/camflow-service.svg?branch=master)](https://travis-ci.org/CamFlow/camflow-service/branches)  |[![SonarQube Status](https://sonarqube.com//api/badges/gate?key=camflow%3Amqtt)](https://sonarqube.com/dashboard?id=camflow%3Amqtt)   |
-| dev    | [![Dev Build Status](https://api.travis-ci.org/CamFlow/camflow-service.svg?branch=dev)](https://travis-ci.org/CamFlow/camflow-service/branches)      |[![SonarQube Status](https://sonarqube.com//api/badges/gate?key=camflow%3Amqtt%3Adev)](https://sonarqube.com/dashboard?id=camflow%3Amqtt%3Adev)   |
+| Branch | Status                                                                                  |
+|--------|-----------------------------------------------------------------------------------------|
+| master | [![Master Build Status](https://api.travis-ci.org/CamFlow/camflow-service.svg?branch=master)](https://travis-ci.org/CamFlow/camflow-service/branches)  |
+| dev    | [![Dev Build Status](https://api.travis-ci.org/CamFlow/camflow-service.svg?branch=dev)](https://travis-ci.org/CamFlow/camflow-service/branches)      |
 
 Automated Travis test run the following operation:
 - run [SonarQube](https://sonarqube.com).
