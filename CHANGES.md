@@ -1,9 +1,15 @@
 | Tool version    | Date       |
 | --------------- | ---------- |
+| 0.1.4           | 07/08/2017 |
 | 0.1.3           | 03/08/2017 |
 | 0.1.2           | 02/08/2017 |
 | 0.1.1           | 23/06/2017 |
 | 0.1.0           | 22/05/2017 |
+
+### v0.1.4
+```
+- Use BSD library for safer string concatenation see (https://github.com/camflow/libprovenance).
+```
 
 ### v0.1.3
 ```
