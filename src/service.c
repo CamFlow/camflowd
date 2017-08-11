@@ -18,6 +18,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <syslog.h>
+#include <signal.h>
 
 #include "provenance.h"
 #include "provenanceutils.h"
@@ -173,11 +174,33 @@ static inline void __init_syslog(void){
   openlog(APP_NAME, LOG_CONS | LOG_PID | LOG_NDELAY, LOG_DAEMON);
 }
 
+volatile sig_atomic_t terminate = 0;
+
+void term(int signum)
+{
+  terminate = 1;
+  syslog(LOG_INFO, "Shutdown signal received.");
+  if (!IS_CONFIG_NULL())
+    flush_json();
+  provenance_stop();
+  if(IS_CONFIG_MQTT())
+    stop_mqtt();
+  syslog(LOG_INFO, "Service terminated.");
+  exit(0);
+}
+
 int main(void)
 {
     int rc;
     uint32_t i;
     char json[4096];
+    struct sigaction action;
+
+    action.sa_handler = term;
+    sigaction(SIGTERM, &action, NULL);
+    sigaction(SIGQUIT, &action, NULL);
+    sigaction(SIGHUP, &action, NULL);
+
     __init_syslog();
     if(!provenance_is_present()) {
       syslog(LOG_ERR, "CamFlow not present in current kernel.");
@@ -210,17 +233,14 @@ int main(void)
       syslog(LOG_ERR, "Failed registering audit operation.");
       exit(rc);
     }
-    while(1){
-      sleep(1);
+
+    while(!terminate){
       if (!IS_CONFIG_NULL())
         flush_json();
       if(i%10==0 && IS_CONFIG_MQTT())
         mqtt_publish("keepalive", NULL, 0, false); // keep alive
       i++;
+      sleep(1);
     }
-    // never reached
-    provenance_stop();
-    if(IS_CONFIG_MQTT())
-      stop_mqtt();
     return 0;
 }
