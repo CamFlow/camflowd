@@ -10,6 +10,7 @@
 
 ### v0.1.6
 ```
+- Remove unknown relation.
 - Unknown relation is gone.
 ```
 
