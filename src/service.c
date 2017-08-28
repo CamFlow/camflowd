@@ -39,10 +39,6 @@ void log_str(struct str_struct* data){
   append_entity(str_msg_to_json(data));
 }
 
-void log_unknown_relation(struct relation_struct* relation){
-  append_relation(relation_to_json(relation));
-}
-
 void log_derived(struct relation_struct* relation){
   append_derived(derived_to_json(relation));
 }
@@ -125,7 +121,6 @@ void log_error(char* error){
 
 struct provenance_ops ops = {
   .init=&init,
-  .log_unknown_relation=&log_unknown_relation,
   .log_derived=&log_derived,
   .log_generated=&log_generated,
   .log_used=&log_used,
@@ -148,7 +143,6 @@ struct provenance_ops ops = {
 
 struct provenance_ops ops_null = {
   .init=&init,
-  .log_unknown_relation=NULL,
   .log_derived=NULL,
   .log_generated=NULL,
   .log_used=NULL,
