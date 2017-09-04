@@ -11,6 +11,7 @@
 
 ### v0.1.7
 ```
+- One hook per disclosed vertex type (entity, activity, agent).
 - Use libprovenance as a shared library.
 ```
 
