@@ -1,5 +1,6 @@
 | Tool version    | Date       |
 | --------------- | ---------- |
+| 0.1.7           | 28/09/2017 |
 | 0.1.6           | 28/08/2017 |
 | 0.1.5           | 27/08/2017 |
 | 0.1.4           | 07/08/2017 |
@@ -7,6 +8,12 @@
 | 0.1.2           | 02/08/2017 |
 | 0.1.1           | 23/06/2017 |
 | 0.1.0           | 22/05/2017 |
+
+### v0.1.7
+```
+- One hook per disclosed vertex type (entity, activity, agent).
+- Use libprovenance as a shared library.
+```
 
 ### v0.1.6
 ```

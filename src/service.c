@@ -22,7 +22,7 @@
 
 #include "provenance.h"
 #include "provenanceutils.h"
-#include "provenancePovJSON.h"
+#include "provenanceProvJSON.h"
 
 #include "service-config.h"
 #include "service-log.h"
@@ -63,19 +63,16 @@ void log_inode(struct inode_prov_struct* inode){
   append_entity(inode_to_json(inode));
 }
 
-void log_disc(struct disc_node_struct* node){
-  switch(node->identifier.node_id.type){
-    case ACT_DISC:
-      append_activity(disc_to_json(node));
-      break;
-    case AGT_DISC:
-      append_agent(disc_to_json(node));
-      break;
-    //case ENT_DISC: //default
-    default:
-      append_entity(disc_to_json(node));
-      break;
-  }
+void log_act_disc(struct disc_node_struct* node){
+  append_activity(disc_to_json(node));
+}
+
+void log_agt_disc(struct disc_node_struct* node){
+  append_agent(disc_to_json(node));
+}
+
+void log_ent_disc(struct disc_node_struct* node){
+  append_entity(disc_to_json(node));
 }
 
 void log_msg(struct msg_msg_struct* msg){
@@ -128,7 +125,9 @@ struct provenance_ops ops = {
   .log_task=&log_task,
   .log_inode=&log_inode,
   .log_str=&log_str,
-  .log_disc=&log_disc,
+  .log_act_disc=&log_act_disc,
+  .log_agt_disc=&log_agt_disc,
+  .log_ent_disc=&log_ent_disc,
   .log_msg=&log_msg,
   .log_shm=&log_shm,
   .log_packet=&log_packet,
@@ -150,7 +149,9 @@ struct provenance_ops ops_null = {
   .log_task=NULL,
   .log_inode=NULL,
   .log_str=NULL,
-  .log_disc=NULL,
+  .log_act_disc=NULL,
+  .log_agt_disc=NULL,
+  .log_ent_disc=NULL,
   .log_msg=NULL,
   .log_shm=NULL,
   .log_packet=NULL,
