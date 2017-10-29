@@ -177,7 +177,7 @@ void term(int signum)
   syslog(LOG_INFO, "Shutdown signal received.");
   if (!IS_CONFIG_NULL())
     flush_json();
-  provenance_stop();
+  provenance_relay_stop();
   if(IS_CONFIG_MQTT())
     stop_mqtt();
   syslog(LOG_INFO, "Service terminated.");
@@ -220,9 +220,9 @@ int main(void)
     }
 
     if (IS_CONFIG_NULL())
-      rc = provenance_register(&ops_null);
+      rc = provenance_relay_register(&ops_null, NULL);
     else
-      rc = provenance_register(&ops);
+      rc = provenance_relay_register(&ops, NULL);
 
     if(rc){
       syslog(LOG_ERR, "Failed registering audit operation.");
