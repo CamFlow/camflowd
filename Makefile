@@ -49,7 +49,7 @@ rpm:
 	cp ~/rpmbuild/RPMS/x86_64/* ./output
 
 publish:
-	cd ./output && package_cloud push camflow/provenance/fedora/26 camflowd-$(version)-1.x86_64.rpm
+	cd ./output && package_cloud push camflow/provenance/fedora/27 camflowd-$(version)-1.x86_64.rpm
 
 
 restart:
