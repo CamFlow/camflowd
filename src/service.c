@@ -55,6 +55,10 @@ void log_informed(struct relation_struct* relation){
   append_informed(informed_to_json(relation));
 }
 
+void log_proc(struct proc_prov_struct* proc){
+  append_entity(proc_to_json(proc));
+}
+
 void log_task(struct task_prov_struct* task){
   append_activity(task_to_json(task));
 }
@@ -122,6 +126,7 @@ struct provenance_ops ops = {
   .log_generated=&log_generated,
   .log_used=&log_used,
   .log_informed=&log_informed,
+  .log_proc=&log_proc,
   .log_task=&log_task,
   .log_inode=&log_inode,
   .log_str=&log_str,
@@ -146,6 +151,7 @@ struct provenance_ops ops_null = {
   .log_generated=NULL,
   .log_used=NULL,
   .log_informed=NULL,
+  .log_proc=NULL,
   .log_task=NULL,
   .log_inode=NULL,
   .log_str=NULL,
