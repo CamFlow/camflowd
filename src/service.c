@@ -20,9 +20,10 @@
 #include <syslog.h>
 #include <signal.h>
 
-#include "provenance.h"
-#include "provenanceutils.h"
-#include "provenanceProvJSON.h"
+#include <provenance.h>
+#include <provenanceutils.h>
+#include <provenanceProvJSON.h>
+#include <provenanceSPADEJSON.h>
 
 #include "service-config.h"
 #include "service-log.h"
@@ -35,113 +36,215 @@ void init( void ){
   syslog(LOG_INFO, "Init audit thread (%ld)", tid);
 }
 
-void log_str(struct str_struct* data){
+void w3c_str(struct str_struct* data){
   append_entity(str_msg_to_json(data));
 }
 
-void log_derived(struct relation_struct* relation){
+void w3c_derived(struct relation_struct* relation){
   append_derived(derived_to_json(relation));
 }
 
-void log_generated(struct relation_struct* relation){
+void w3c_generated(struct relation_struct* relation){
   append_generated(generated_to_json(relation));
 }
 
-void log_used(struct relation_struct* relation){
+void w3c_used(struct relation_struct* relation){
   append_used(used_to_json(relation));
 }
 
-void log_informed(struct relation_struct* relation){
+void w3c_informed(struct relation_struct* relation){
   append_informed(informed_to_json(relation));
 }
 
-void log_proc(struct proc_prov_struct* proc){
+void w3c_proc(struct proc_prov_struct* proc){
   append_entity(proc_to_json(proc));
 }
 
-void log_task(struct task_prov_struct* task){
+void w3c_task(struct task_prov_struct* task){
   append_activity(task_to_json(task));
 }
 
-void log_inode(struct inode_prov_struct* inode){
+void w3c_inode(struct inode_prov_struct* inode){
   append_entity(inode_to_json(inode));
 }
 
-void log_act_disc(struct disc_node_struct* node){
+void w3c_act_disc(struct disc_node_struct* node){
   append_activity(disc_to_json(node));
 }
 
-void log_agt_disc(struct disc_node_struct* node){
+void w3c_agt_disc(struct disc_node_struct* node){
   append_agent(disc_to_json(node));
 }
 
-void log_ent_disc(struct disc_node_struct* node){
+void w3c_ent_disc(struct disc_node_struct* node){
   append_entity(disc_to_json(node));
 }
 
-void log_msg(struct msg_msg_struct* msg){
+void w3c_msg(struct msg_msg_struct* msg){
   append_entity(msg_to_json(msg));
 }
 
-void log_shm(struct shm_struct* shm){
+void w3c_shm(struct shm_struct* shm){
   append_entity(shm_to_json(shm));
 }
 
-void log_packet(struct pck_struct* pck){
+void w3c_packet(struct pck_struct* pck){
   append_entity(packet_to_json(pck));
 }
 
-void log_address(struct address_struct* address){
+void w3c_address(struct address_struct* address){
   append_entity(addr_to_json(address));
 }
 
-void log_file_name(struct file_name_struct* f_name){
+void w3c_file_name(struct file_name_struct* f_name){
   append_entity(pathname_to_json(f_name));
 }
 
-void log_iattr(struct iattr_prov_struct* iattr){
+void w3c_iattr(struct iattr_prov_struct* iattr){
   append_entity(iattr_to_json(iattr));
 }
 
 
-void log_xattr(struct xattr_prov_struct* xattr){
+void w3c_xattr(struct xattr_prov_struct* xattr){
   append_entity(xattr_to_json(xattr));
 }
 
-void log_packet_content(struct pckcnt_struct* cnt){
+void w3c_packet_content(struct pckcnt_struct* cnt){
   append_entity(pckcnt_to_json(cnt));
 }
 
-void log_arg(struct arg_struct* arg){
+void w3c_arg(struct arg_struct* arg){
   append_entity(arg_to_json(arg));
+}
+
+void spade_derived(struct relation_struct* relation){
+  log_print_spade_json(derived_to_spade_json(relation), false);
+}
+
+void spade_generated(struct relation_struct* relation){
+  log_print_spade_json(generated_to_spade_json(relation), false);
+}
+
+void spade_used(struct relation_struct* relation){
+  log_print_spade_json(used_to_spade_json(relation), false);
+}
+
+void spade_informed(struct relation_struct* relation){
+  log_print_spade_json(informed_to_spade_json(relation), false);
+}
+
+void spade_proc(struct proc_prov_struct* proc){
+    log_print_spade_json(proc_to_spade_json(proc), false);
+}
+
+void spade_task(struct task_prov_struct* task){
+  log_print_spade_json(task_to_spade_json(task), false);
+}
+
+void spade_inode(struct inode_prov_struct* inode){
+  log_print_spade_json(inode_to_spade_json(inode), false);
+}
+
+void spade_act_disc(struct disc_node_struct* node){
+  log_print_spade_json(disc_to_spade_json(node), false);
+}
+
+void spade_agt_disc(struct disc_node_struct* node){
+  log_print_spade_json(disc_to_spade_json(node), false);
+}
+
+void spade_ent_disc(struct disc_node_struct* node){
+  log_print_spade_json(disc_to_spade_json(node), false);
+}
+
+void spade_msg(struct msg_msg_struct* msg){
+  log_print_spade_json(msg_to_spade_json(msg), false);
+}
+
+void spade_shm(struct shm_struct* shm){
+  log_print_spade_json(shm_to_spade_json(shm), false);
+}
+
+void spade_packet(struct pck_struct* pck){
+  log_print_spade_json(packet_to_spade_json(pck), false);
+}
+
+void spade_address(struct address_struct* address){
+  log_print_spade_json(addr_to_spade_json(address), false);
+}
+
+void spade_file_name(struct file_name_struct* f_name){
+  log_print_spade_json(pathname_to_spade_json(f_name), false);
+}
+
+void spade_iattr(struct iattr_prov_struct* iattr){
+  log_print_spade_json(iattr_to_spade_json(iattr), false);
+}
+
+
+void spade_xattr(struct xattr_prov_struct* xattr){
+  log_print_spade_json(xattr_to_spade_json(xattr), false);
+}
+
+void spade_packet_content(struct pckcnt_struct* cnt){
+  log_print_spade_json(pckcnt_to_spade_json(cnt), false);
+}
+
+void spade_arg(struct arg_struct* arg){
+  log_print_spade_json(arg_to_spade_json(arg), false);
 }
 
 void log_error(char* error){
   syslog(LOG_ERR, "From library: %s", error);
 }
 
-struct provenance_ops ops = {
+struct provenance_ops w3c_ops = {
   .init=&init,
-  .log_derived=&log_derived,
-  .log_generated=&log_generated,
-  .log_used=&log_used,
-  .log_informed=&log_informed,
-  .log_proc=&log_proc,
-  .log_task=&log_task,
-  .log_inode=&log_inode,
-  .log_str=&log_str,
-  .log_act_disc=&log_act_disc,
-  .log_agt_disc=&log_agt_disc,
-  .log_ent_disc=&log_ent_disc,
-  .log_msg=&log_msg,
-  .log_shm=&log_shm,
-  .log_packet=&log_packet,
-  .log_address=&log_address,
-  .log_file_name=&log_file_name,
-  .log_iattr=&log_iattr,
-  .log_xattr=&log_xattr,
-  .log_packet_content=&log_packet_content,
-  .log_arg=&log_arg,
+  .log_derived=&w3c_derived,
+  .log_generated=&w3c_generated,
+  .log_used=&w3c_used,
+  .log_informed=&w3c_informed,
+  .log_proc=&w3c_proc,
+  .log_task=&w3c_task,
+  .log_inode=&w3c_inode,
+  .log_str=&w3c_str,
+  .log_act_disc=&w3c_act_disc,
+  .log_agt_disc=&w3c_agt_disc,
+  .log_ent_disc=&w3c_ent_disc,
+  .log_msg=&w3c_msg,
+  .log_shm=&w3c_shm,
+  .log_packet=&w3c_packet,
+  .log_address=&w3c_address,
+  .log_file_name=&w3c_file_name,
+  .log_iattr=&w3c_iattr,
+  .log_xattr=&w3c_xattr,
+  .log_packet_content=&w3c_packet_content,
+  .log_arg=&w3c_arg,
+  .log_error=&log_error
+};
+
+struct provenance_ops spade_json_ops = {
+  .init=&init,
+  .log_derived=&spade_derived,
+  .log_generated=&spade_generated,
+  .log_used=&spade_used,
+  .log_informed=&spade_informed,
+  .log_proc=&spade_proc,
+  .log_task=&spade_task,
+  .log_inode=&spade_inode,
+  .log_str=NULL,
+  .log_act_disc=&spade_act_disc,
+  .log_agt_disc=&spade_agt_disc,
+  .log_ent_disc=&spade_ent_disc,
+  .log_msg=&spade_msg,
+  .log_shm=&spade_shm,
+  .log_packet=&spade_packet,
+  .log_address=&spade_address,
+  .log_file_name=&spade_file_name,
+  .log_iattr=&spade_iattr,
+  .log_xattr=&spade_xattr,
+  .log_packet_content=&spade_packet_content,
+  .log_arg=&spade_arg,
   .log_error=&log_error
 };
 
@@ -221,14 +324,20 @@ int main(void)
       set_ProvJSON_callback(mqtt_print_json);
     }else if(IS_CONFIG_LOG()){
       _init_logs();
-      log_print_json(machine_description_json(json));
-      set_ProvJSON_callback(log_print_json);
+      if (IS_FORMAT_W3C()) {
+        log_print_w3c(machine_description_json(json));
+        set_ProvJSON_callback(log_print_w3c);
+      }else if (IS_FORMAT_SPADE_JSON()) {
+        log_print_spade_json("[{\"type\":\"Activity\",\"id\":\"1\"}]", true);
+      }
     }
 
     if (IS_CONFIG_NULL())
       rc = provenance_relay_register(&ops_null, NULL);
-    else
-      rc = provenance_relay_register(&ops, NULL);
+    else if(IS_FORMAT_W3C())
+      rc = provenance_relay_register(&w3c_ops, NULL);
+    else if(IS_FORMAT_SPADE_JSON())
+      rc = provenance_relay_register(&spade_json_ops, NULL);
 
     if(rc){
       syslog(LOG_ERR, "Failed registering audit operation.");
@@ -236,7 +345,7 @@ int main(void)
     }
 
     while(!terminate){
-      if (!IS_CONFIG_NULL())
+      if (!IS_CONFIG_NULL() && IS_FORMAT_W3C())
         flush_json();
       if(i%10==0 && IS_CONFIG_MQTT())
         mqtt_publish("keepalive", NULL, 0, false); // keep alive
