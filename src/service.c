@@ -118,80 +118,80 @@ void w3c_arg(struct arg_struct* arg){
 }
 
 void spade_derived(struct relation_struct* relation){
-  log_print_spade_json(derived_to_spade_json(relation), false);
+  spade_json_append(derived_to_spade_json(relation));
 }
 
 void spade_generated(struct relation_struct* relation){
-  log_print_spade_json(generated_to_spade_json(relation), false);
+  spade_json_append(generated_to_spade_json(relation));
 }
 
 void spade_used(struct relation_struct* relation){
-  log_print_spade_json(used_to_spade_json(relation), false);
+  spade_json_append(used_to_spade_json(relation));
 }
 
 void spade_informed(struct relation_struct* relation){
-  log_print_spade_json(informed_to_spade_json(relation), false);
+  spade_json_append(informed_to_spade_json(relation));
 }
 
 void spade_proc(struct proc_prov_struct* proc){
-    log_print_spade_json(proc_to_spade_json(proc), false);
+    spade_json_append(proc_to_spade_json(proc));
 }
 
 void spade_task(struct task_prov_struct* task){
-  log_print_spade_json(task_to_spade_json(task), false);
+  spade_json_append(task_to_spade_json(task));
 }
 
 void spade_inode(struct inode_prov_struct* inode){
-  log_print_spade_json(inode_to_spade_json(inode), false);
+  spade_json_append(inode_to_spade_json(inode));
 }
 
 void spade_act_disc(struct disc_node_struct* node){
-  log_print_spade_json(disc_to_spade_json(node), false);
+  spade_json_append(disc_to_spade_json(node));
 }
 
 void spade_agt_disc(struct disc_node_struct* node){
-  log_print_spade_json(disc_to_spade_json(node), false);
+  spade_json_append(disc_to_spade_json(node));
 }
 
 void spade_ent_disc(struct disc_node_struct* node){
-  log_print_spade_json(disc_to_spade_json(node), false);
+  spade_json_append(disc_to_spade_json(node));
 }
 
 void spade_msg(struct msg_msg_struct* msg){
-  log_print_spade_json(msg_to_spade_json(msg), false);
+  spade_json_append(msg_to_spade_json(msg));
 }
 
 void spade_shm(struct shm_struct* shm){
-  log_print_spade_json(shm_to_spade_json(shm), false);
+  spade_json_append(shm_to_spade_json(shm));
 }
 
 void spade_packet(struct pck_struct* pck){
-  log_print_spade_json(packet_to_spade_json(pck), false);
+  spade_json_append(packet_to_spade_json(pck));
 }
 
 void spade_address(struct address_struct* address){
-  log_print_spade_json(addr_to_spade_json(address), false);
+  spade_json_append(addr_to_spade_json(address));
 }
 
 void spade_file_name(struct file_name_struct* f_name){
-  log_print_spade_json(pathname_to_spade_json(f_name), false);
+  spade_json_append(pathname_to_spade_json(f_name));
 }
 
 void spade_iattr(struct iattr_prov_struct* iattr){
-  log_print_spade_json(iattr_to_spade_json(iattr), false);
+  spade_json_append(iattr_to_spade_json(iattr));
 }
 
 
 void spade_xattr(struct xattr_prov_struct* xattr){
-  log_print_spade_json(xattr_to_spade_json(xattr), false);
+  spade_json_append(xattr_to_spade_json(xattr));
 }
 
 void spade_packet_content(struct pckcnt_struct* cnt){
-  log_print_spade_json(pckcnt_to_spade_json(cnt), false);
+  spade_json_append(pckcnt_to_spade_json(cnt));
 }
 
 void spade_arg(struct arg_struct* arg){
-  log_print_spade_json(arg_to_spade_json(arg), false);
+  spade_json_append(arg_to_spade_json(arg));
 }
 
 void log_error(char* error){
@@ -300,6 +300,8 @@ int main(void)
     char json[4096];
     struct sigaction action;
 
+    printf("Test\n");
+
     action.sa_handler = term;
     sigaction(SIGTERM, &action, NULL);
     sigaction(SIGQUIT, &action, NULL);
@@ -315,6 +317,7 @@ int main(void)
     syslog(LOG_INFO, "%s\n", __service_config.log);
     syslog(LOG_INFO, "Output option: %s", __service_config.output);
 
+    printf("Test\n");
     if(IS_CONFIG_MQTT()){
       syslog(LOG_INFO, "MQTT Provenance service");
       syslog(LOG_INFO, "Main process pid: %ld", getpid());
@@ -323,14 +326,21 @@ int main(void)
       publish_json(__service_config.machine_topic, machine_description_json(json), true);
       set_ProvJSON_callback(mqtt_print_json);
     }else if(IS_CONFIG_LOG()){
+      printf("Log\n");
       _init_logs();
+      printf("Log init done\n");
       if (IS_FORMAT_W3C()) {
         log_print_w3c(machine_description_json(json));
         set_ProvJSON_callback(log_print_w3c);
       }else if (IS_FORMAT_SPADE_JSON()) {
-        log_print_spade_json(machine_description_spade_json(), true);
+        printf("We got that far.\n");
+        log_print_spade_json(machine_description_spade_json());
+        set_SPADEJSON_callback(log_print_spade_json);
+        printf("Init went well.\n");
       }
     }
+
+    printf("Here\n");
 
     if (IS_CONFIG_NULL())
       rc = provenance_relay_register(&ops_null, NULL);
@@ -347,6 +357,8 @@ int main(void)
     while(!terminate){
       if (!IS_CONFIG_NULL() && IS_FORMAT_W3C())
         flush_json();
+      else if(!IS_CONFIG_NULL() && IS_FORMAT_SPADE_JSON())
+        flush_spade_json();
       if(i%10==0 && IS_CONFIG_MQTT())
         mqtt_publish("keepalive", NULL, 0, false); // keep alive
       i++;

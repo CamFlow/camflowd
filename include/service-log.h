@@ -61,12 +61,16 @@ static inline void __change_last_character( void ) {
   close(fd);
 }
 
-static inline void log_print_spade_json(char* json, bool first){
+
+static bool first=true;
+static inline void log_print_spade_json(char* json){
   int len = strlen(json);
   char c;
   int rc=0;
   pthread_mutex_lock(&l_mutex);
-  if(!first) {
+  if (first) {
+    first = false;
+  } else {
     lseek(__log_fd, -1, SEEK_END);
     write(__log_fd, ",", 1);
   }
