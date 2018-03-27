@@ -328,7 +328,7 @@ int main(void)
         log_print_w3c(machine_description_json(json));
         set_ProvJSON_callback(log_print_w3c);
       }else if (IS_FORMAT_SPADE_JSON()) {
-        log_print_spade_json("[{\"type\":\"Activity\",\"id\":\"1\"}]", true);
+        log_print_spade_json(machine_description_spade_json(), true);
       }
     }
 
