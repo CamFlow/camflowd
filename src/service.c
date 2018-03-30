@@ -323,8 +323,13 @@ int main(void)
       syslog(LOG_INFO, "Main process pid: %ld", getpid());
       init_mqtt();
       mqtt_connect(true);
-      publish_json(__service_config.machine_topic, machine_description_json(json), true);
-      set_ProvJSON_callback(mqtt_print_json);
+      if (IS_FORMAT_W3C()) {
+        publish_json(__service_config.machine_topic, machine_description_json(json), true);
+        set_ProvJSON_callback(mqtt_print_json);
+      } else if(IS_FORMAT_SPADE_JSON()) {
+        publish_json(__service_config.machine_topic, machine_description_spade_json(), true);
+        set_SPADEJSON_callback(log_print_spade_json);
+      }
     }else if(IS_CONFIG_LOG()){
       printf("Log\n");
       _init_logs();
