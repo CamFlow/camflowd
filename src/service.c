@@ -3,14 +3,13 @@
 *
 * Author: Thomas Pasquier <tfjmp@seas.harvard.edu>
 *
-* Copyright (C) 2017 Harvard University
+* Copyright (C) 2017-2018 University of Cambridge, Harvard University
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License version 2, as
 * published by the Free Software Foundation.
 *
 */
-
 #define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
@@ -28,6 +27,7 @@
 #include "service-config.h"
 #include "service-log.h"
 #include "service-mqtt.h"
+#include "service-unix.h"
 
 #define APP_NAME "camflowd"
 
