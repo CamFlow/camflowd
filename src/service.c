@@ -300,8 +300,6 @@ int main(void)
     char json[4096];
     struct sigaction action;
 
-    printf("Test\n");
-
     action.sa_handler = term;
     sigaction(SIGTERM, &action, NULL);
     sigaction(SIGQUIT, &action, NULL);
@@ -317,7 +315,6 @@ int main(void)
     syslog(LOG_INFO, "%s\n", __service_config.log);
     syslog(LOG_INFO, "Output option: %s", __service_config.output);
 
-    printf("Test\n");
     if(IS_CONFIG_MQTT()){
       syslog(LOG_INFO, "MQTT Provenance service");
       syslog(LOG_INFO, "Main process pid: %ld", getpid());
@@ -331,21 +328,15 @@ int main(void)
         set_SPADEJSON_callback(log_print_spade_json);
       }
     }else if(IS_CONFIG_LOG()){
-      printf("Log\n");
       _init_logs();
-      printf("Log init done\n");
       if (IS_FORMAT_W3C()) {
         log_print_w3c(machine_description_json(json));
         set_ProvJSON_callback(log_print_w3c);
       }else if (IS_FORMAT_SPADE_JSON()) {
-        printf("We got that far.\n");
         log_print_spade_json(machine_description_spade_json());
         set_SPADEJSON_callback(log_print_spade_json);
-        printf("Init went well.\n");
       }
     }
-
-    printf("Here\n");
 
     if (IS_CONFIG_NULL())
       rc = provenance_relay_register(&ops_null, NULL);

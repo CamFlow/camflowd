@@ -45,6 +45,7 @@ static inline void log_print_w3c(char* json){
     rc = write(__log_fd, json, len);
     if(rc<0)
       exit(-1);
+    json+=rc;
     len-=rc;
   }
   write(__log_fd, "\n", 1);
@@ -72,16 +73,15 @@ static inline void log_print_spade_json(char* json){
     first = false;
   } else {
     lseek(__log_fd, -1, SEEK_END);
-    write(__log_fd, ",", 1);
+    json[0]=',';
   }
   while (len > 0) {
     rc = write(__log_fd, json, len);
     if(rc<0)
       exit(-1);
+    json+=rc;
     len-=rc;
   }
-  lseek(__log_fd, -1, SEEK_END);
-  write(__log_fd, "]", 1);
   fsync(__log_fd);
   pthread_mutex_unlock(&l_mutex);
 }
