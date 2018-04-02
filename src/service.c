@@ -325,7 +325,7 @@ int main(void)
         set_ProvJSON_callback(mqtt_print_json);
       } else if(IS_FORMAT_SPADE_JSON()) {
         publish_json(__service_config.machine_topic, machine_description_spade_json(), true);
-        set_SPADEJSON_callback(log_print_spade_json);
+        set_SPADEJSON_callback(mqtt_print_json);
       }
     }else if(IS_CONFIG_LOG()){
       _init_logs();
@@ -335,6 +335,15 @@ int main(void)
       }else if (IS_FORMAT_SPADE_JSON()) {
         log_print_spade_json(machine_description_spade_json());
         set_SPADEJSON_callback(log_print_spade_json);
+      }
+    } else if(IS_CONFIG_UNIX()) {
+      _init_unix();
+      if (IS_FORMAT_W3C()) {
+        send_json(machine_description_json(json));
+        set_ProvJSON_callback(send_json);
+      } else if(IS_FORMAT_SPADE_JSON()) {
+        send_json(machine_description_spade_json());
+        set_SPADEJSON_callback(send_json);
       }
     }
 
