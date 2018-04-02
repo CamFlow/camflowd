@@ -39,5 +39,4 @@ static inline void _init_fifo ( void ) {
 static void write_fifo_json(char* json) {
   write(__fifo_fd, json, strlen(json)+1);
 }
-
 #endif

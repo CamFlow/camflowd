@@ -60,5 +60,4 @@ static void send_json(char* json){
     exit(-1);
   }
 }
-
 #endif
