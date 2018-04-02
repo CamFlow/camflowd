@@ -28,6 +28,7 @@
 #include "service-log.h"
 #include "service-mqtt.h"
 #include "service-unix.h"
+#include "service-fifo.h"
 
 #define APP_NAME "camflowd"
 
@@ -344,6 +345,15 @@ int main(void)
       } else if(IS_FORMAT_SPADE_JSON()) {
         send_json(machine_description_spade_json());
         set_SPADEJSON_callback(send_json);
+      }
+    } else if(IS_CONFIG_FIFO()) {
+      _init_fifo();
+      if (IS_FORMAT_W3C()) {
+        write_fifo_json(machine_description_json(json));
+        set_ProvJSON_callback(write_fifo_json);
+      } else if(IS_FORMAT_SPADE_JSON()) {
+        write_fifo_json(machine_description_spade_json());
+        set_SPADEJSON_callback(write_fifo_json);
       }
     }
 
