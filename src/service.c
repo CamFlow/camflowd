@@ -21,7 +21,7 @@
 
 #include <provenance.h>
 #include <provenanceutils.h>
-#include <provenanceProvJSON.h>
+#include <provenanceW3CJSON.h>
 #include <provenanceSPADEJSON.h>
 
 #include "service-config.h"
@@ -323,7 +323,7 @@ int main(void)
       mqtt_connect(true);
       if (IS_FORMAT_W3C()) {
         publish_json(__service_config.machine_topic, machine_description_json(json), true);
-        set_ProvJSON_callback(mqtt_print_json);
+        set_W3CJSON_callback(mqtt_print_json);
       } else if(IS_FORMAT_SPADE_JSON()) {
         publish_json(__service_config.machine_topic, machine_description_spade_json(), true);
         set_SPADEJSON_callback(mqtt_print_json);
@@ -332,7 +332,7 @@ int main(void)
       _init_logs();
       if (IS_FORMAT_W3C()) {
         log_print_w3c(machine_description_json(json));
-        set_ProvJSON_callback(log_print_w3c);
+        set_W3CJSON_callback(log_print_w3c);
       }else if (IS_FORMAT_SPADE_JSON()) {
         log_print_spade_json(machine_description_spade_json());
         set_SPADEJSON_callback(log_print_spade_json);
@@ -341,7 +341,7 @@ int main(void)
       _init_unix();
       if (IS_FORMAT_W3C()) {
         send_json(machine_description_json(json));
-        set_ProvJSON_callback(send_json);
+        set_W3CJSON_callback(send_json);
       } else if(IS_FORMAT_SPADE_JSON()) {
         send_json(machine_description_spade_json());
         set_SPADEJSON_callback(send_json);
@@ -350,7 +350,7 @@ int main(void)
       _init_fifo();
       if (IS_FORMAT_W3C()) {
         write_fifo_json(machine_description_json(json));
-        set_ProvJSON_callback(write_fifo_json);
+        set_W3CJSON_callback(write_fifo_json);
       } else if(IS_FORMAT_SPADE_JSON()) {
         write_fifo_json(machine_description_spade_json());
         set_SPADEJSON_callback(write_fifo_json);
