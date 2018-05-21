@@ -1,6 +1,6 @@
 | Tool version    | Date       |
 | --------------- | ---------- |
-| 0.1.9           | N/A        |
+| 0.2.0           | N/A        |
 | 0.1.8           | 12/12/2017 |
 | 0.1.7           | 28/09/2017 |
 | 0.1.6           | 28/08/2017 |
@@ -11,7 +11,7 @@
 | 0.1.1           | 23/06/2017 |
 | 0.1.0           | 22/05/2017 |
 
-### v0.1.9
+### v0.2.0
 ```
 - Support several output medium (file, mqtt, unix socket, fifo), see camflowd.ini.
 - Support several output formats (w3c, spade_json), see camflowd.ini.
