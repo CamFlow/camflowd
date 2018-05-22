@@ -15,7 +15,7 @@
 ```
 - Support several output medium (file, mqtt, unix socket, fifo), see camflowd.ini.
 - Support several output formats (w3c, spade_json), see camflowd.ini.
-- Thread levell provenance support.
+- Thread level provenance support.
 ```
 
 ### v0.1.8

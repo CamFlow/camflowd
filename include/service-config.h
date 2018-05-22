@@ -46,7 +46,7 @@ static int handler(void* user, const char* section, const char* name,
                    const char* value)
 {
     configuration* pconfig = (configuration*)user;
-		if(MATCH("general", "log")){
+		if(MATCH("log", "path")){
 			strncpy(pconfig->log, value, PATH_MAX);
 		}else if(MATCH("general", "output")){
 			strncpy(pconfig->output, value, MAX_OUTPUT_LENGTH);
