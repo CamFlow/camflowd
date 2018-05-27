@@ -27,6 +27,7 @@
 typedef struct{
   int qos;
   char address[PATH_MAX]; // assuming we could use unix socket
+  char unix_address[PATH_MAX]; // assuming we could use unix socket
   char fifo[PATH_MAX];
   char username[1024];
   char password[1024];
@@ -53,7 +54,7 @@ static int handler(void* user, const char* section, const char* name,
 		}else if(MATCH("general", "format")){
 			strncpy(pconfig->format, value, MAX_OUTPUT_LENGTH);
 		}else if(MATCH("unix", "address")){
-			strncpy(pconfig->address, value, PATH_MAX);
+			strncpy(pconfig->unix_address, value, PATH_MAX);
 		}else if(MATCH("fifo", "path")){
 			strncpy(pconfig->fifo, value, PATH_MAX);
 		}else if(MATCH("mqtt", "qos")) {

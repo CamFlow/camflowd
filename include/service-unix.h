@@ -42,21 +42,21 @@ static inline void _init_unix ( void ){
 
   memset(&addr, 0, sizeof(addr));
 	addr.sun_family = AF_UNIX;
-	strcpy(addr.sun_path, __service_config.address);
+	strcpy(addr.sun_path, __service_config.unix_address);
 	if (connect(__unix_fd, (struct sockaddr *)&addr, sizeof(addr)) < 0) {
-    syslog(LOG_ERR, "Could not connect to unix socket %s\n", __service_config.address);
+    syslog(LOG_ERR, "Could not connect to unix socket %s\n", __service_config.unix_address);
     exit(-1);
 	}
 
   syslog(LOG_INFO, "Starting audit service...\n");
 
-  provenance_opaque_file(__service_config.address, true);
+  provenance_opaque_file(__service_config.unix_address, true);
   provenance_opaque_file(CLIENT_SOCKET, true);
 }
 
 static void send_json(char* json){
   if (send(__unix_fd, json, strlen(json)+1, 0) < 0){
-    syslog(LOG_ERR, "Could not send to unix socket %s\n", __service_config.address);
+    syslog(LOG_ERR, "Could not send to unix socket %s\n", __service_config.unix_address);
     exit(-1);
   }
 }

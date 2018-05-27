@@ -3,7 +3,7 @@
 *
 * Author: Thomas Pasquier <tfjmp@seas.harvard.edu>
 *
-* Copyright (C) 2017-2018 University of Cambridge, Harvard University
+* Copyright (C) 2017 Harvard University
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License version 2, as
@@ -40,6 +40,7 @@ static inline void init_mqtt(void){
   snprintf(__service_config.client_id, MAX_MQTT_CLIENT_ID_LENGTH, "%u", machine_id); // should be no more than 23
   syslog(LOG_INFO, "Provenance topic: %s.", __service_config.provenance_topic);
   syslog(LOG_INFO, "Machine topic: %s.", __service_config.machine_topic);
+  syslog(LOG_INFO, "Address: %s.", __service_config.address);
   MQTTClient_create(&__service_client,
     __service_config.address,
     __service_config.client_id,
@@ -67,9 +68,9 @@ static inline void mqtt_connect(bool cleansession){
   conn_opts.password = __service_config.password;
 
   syslog(LOG_INFO, "Connecting to MQTT... (%ld)", tid);
-  if ((rc = MQTTClient_connect(__service_client, &conn_opts)) < 0)
+  if ((rc = MQTTClient_connect(__service_client, &conn_opts)) != MQTTCLIENT_SUCCESS)
   {
-      syslog(LOG_ERR, "Failed to connect, return code %d\n", rc);
+      syslog(LOG_ERR, "camflowd: failed to connect, return code %d\n", rc);
       exit(-1);
   }
   syslog(LOG_INFO, "Connected (%ld)", tid);
