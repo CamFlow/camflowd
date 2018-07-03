@@ -1,4 +1,4 @@
-# Userspace Provenance Service
+# CamFlow Service [![Master Build Status](https://api.travis-ci.org/CamFlow/camflowd.svg?branch=master)](https://travis-ci.org/CamFlow/camflow-service/branches)
 
 ## Build Status
 
