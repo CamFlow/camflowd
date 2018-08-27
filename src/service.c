@@ -311,6 +311,10 @@ int main(void)
       syslog(LOG_ERR, "CamFlow not present in current kernel.");
       exit(-1);
     }
+    if(!provenance_change_epoch()) {
+      syslog(LOG_ERR, "Could not change epoch.");
+      exit(-1);
+    }
     read_config();
     syslog(LOG_INFO, "%s\n", __service_config.log);
     syslog(LOG_INFO, "%s\n", __service_config.log);
