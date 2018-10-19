@@ -335,11 +335,11 @@ int main(void)
     }else if(IS_CONFIG_LOG()){
       _init_logs();
       if (IS_FORMAT_W3C()) {
-        log_print_w3c(machine_description_json(json));
-        set_W3CJSON_callback(log_print_w3c);
+        log_print(machine_description_json(json));
+        set_W3CJSON_callback(log_print);
       }else if (IS_FORMAT_SPADE_JSON()) {
-        log_print_spade_json(machine_description_spade_json());
-        set_SPADEJSON_callback(log_print_spade_json);
+        log_print(machine_description_spade_json());
+        set_SPADEJSON_callback(log_print);
       }
     } else if(IS_CONFIG_UNIX()) {
       _init_unix();

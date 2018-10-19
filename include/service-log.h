@@ -37,7 +37,7 @@ static inline void _init_logs( void ){
   provenance_opaque_file(__service_config.log, true);
 }
 
-static inline void log_print_w3c(char* json){
+static inline void log_print(char* json){
   int len = strlen(json);
   int rc;
 
@@ -50,39 +50,5 @@ static inline void log_print_w3c(char* json){
   }
   write(__log_fd, "\n", 1);
   fsync(__log_fd);
-}
-
-static pthread_mutex_t l_mutex =  PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP;
-
-static inline void __change_last_character( void ) {
-  int fd;
-  fd = open(__service_config.log, O_CREAT|O_WRONLY, S_IRUSR|S_IWUSR|S_IRGRP|S_IROTH);
-  lseek(fd, -1, SEEK_END);
-  write(fd, "]", 1);
-  close(fd);
-}
-
-
-static bool first=true;
-static inline void log_print_spade_json(char* json){
-  int len = strlen(json);
-  char c;
-  int rc=0;
-  pthread_mutex_lock(&l_mutex);
-  if (first) {
-    first = false;
-  } else {
-    lseek(__log_fd, -1, SEEK_END);
-    json[0]=',';
-  }
-  while (len > 0) {
-    rc = write(__log_fd, json, len);
-    if(rc<0)
-      exit(-1);
-    json+=rc;
-    len-=rc;
-  }
-  fsync(__log_fd);
-  pthread_mutex_unlock(&l_mutex);
 }
 #endif

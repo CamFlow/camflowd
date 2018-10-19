@@ -15,6 +15,7 @@
 
 ### v0.2.2
 ```
+- Change to SPADE formatting.
 - Update epoch on start up.
 ```
 
