@@ -37,6 +37,7 @@ static inline void _init_logs( void ){
   provenance_opaque_file(__service_config.log, true);
 }
 
+extern bool is_spade;
 static inline void log_print(char* json){
   int len = strlen(json);
   int rc;
@@ -48,7 +49,8 @@ static inline void log_print(char* json){
     json+=rc;
     len-=rc;
   }
-  write(__log_fd, "\n", 1);
+  if (!is_spade)
+    write(__log_fd, "\n", 1);
   fsync(__log_fd);
 }
 #endif

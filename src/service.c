@@ -294,6 +294,7 @@ void term(int signum)
   exit(0);
 }
 
+bool is_spade = false;
 int main(void)
 {
     int rc;
@@ -319,6 +320,9 @@ int main(void)
     syslog(LOG_INFO, "%s\n", __service_config.log);
     syslog(LOG_INFO, "%s\n", __service_config.log);
     syslog(LOG_INFO, "Output option: %s", __service_config.output);
+
+    if(IS_FORMAT_SPADE_JSON())
+      is_spade = true;
 
     if(IS_CONFIG_MQTT()){
       syslog(LOG_INFO, "MQTT Provenance service");
