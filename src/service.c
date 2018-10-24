@@ -294,6 +294,7 @@ void term(int signum)
   exit(0);
 }
 
+bool is_spade = false;
 int main(void)
 {
     int rc;
@@ -311,10 +312,17 @@ int main(void)
       syslog(LOG_ERR, "CamFlow not present in current kernel.");
       exit(-1);
     }
+    if(!provenance_change_epoch()) {
+      syslog(LOG_ERR, "Could not change epoch.");
+      exit(-1);
+    }
     read_config();
     syslog(LOG_INFO, "%s\n", __service_config.log);
     syslog(LOG_INFO, "%s\n", __service_config.log);
     syslog(LOG_INFO, "Output option: %s", __service_config.output);
+
+    if(IS_FORMAT_SPADE_JSON())
+      is_spade = true;
 
     if(IS_CONFIG_MQTT()){
       syslog(LOG_INFO, "MQTT Provenance service");
@@ -331,11 +339,11 @@ int main(void)
     }else if(IS_CONFIG_LOG()){
       _init_logs();
       if (IS_FORMAT_W3C()) {
-        log_print_w3c(machine_description_json(json));
-        set_W3CJSON_callback(log_print_w3c);
+        log_print(machine_description_json(json));
+        set_W3CJSON_callback(log_print);
       }else if (IS_FORMAT_SPADE_JSON()) {
-        log_print_spade_json(machine_description_spade_json());
-        set_SPADEJSON_callback(log_print_spade_json);
+        log_print(machine_description_spade_json());
+        set_SPADEJSON_callback(log_print);
       }
     } else if(IS_CONFIG_UNIX()) {
       _init_unix();
