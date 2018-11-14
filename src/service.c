@@ -119,7 +119,7 @@ void w3c_arg(struct arg_struct* arg){
 }
 
 void w3c_machine(struct machine_struct* machine){
-  append_entity(machine_to_json(machine));
+  append_agent(machine_to_json(machine));
 }
 
 void spade_derived(struct relation_struct* relation){
