@@ -118,6 +118,10 @@ void w3c_arg(struct arg_struct* arg){
   append_entity(arg_to_json(arg));
 }
 
+void w3c_machine(struct machine_struct* machine){
+  append_entity(machine_to_json(machine));
+}
+
 void spade_derived(struct relation_struct* relation){
   spade_json_append(derived_to_spade_json(relation));
 }
@@ -195,6 +199,10 @@ void spade_arg(struct arg_struct* arg){
   spade_json_append(arg_to_spade_json(arg));
 }
 
+void spade_machine(struct machine_struct* m){
+  spade_json_append(machine_to_spade_json(m));
+}
+
 void log_error(char* error){
   syslog(LOG_ERR, "From library: %s", error);
 }
@@ -221,6 +229,7 @@ struct provenance_ops w3c_ops = {
   .log_xattr=&w3c_xattr,
   .log_packet_content=&w3c_packet_content,
   .log_arg=&w3c_arg,
+  .log_machine=&w3c_machine,
   .log_error=&log_error
 };
 
@@ -246,6 +255,7 @@ struct provenance_ops spade_json_ops = {
   .log_xattr=&spade_xattr,
   .log_packet_content=&spade_packet_content,
   .log_arg=&spade_arg,
+  .log_machine=&spade_machine,
   .log_error=&log_error
 };
 
@@ -271,6 +281,7 @@ struct provenance_ops ops_null = {
   .log_xattr=NULL,
   .log_packet_content=NULL,
   .log_arg=NULL,
+  .log_machine=NULL,
   .log_error=&log_error
 };
 
@@ -330,37 +341,29 @@ int main(void)
       init_mqtt();
       mqtt_connect(true);
       if (IS_FORMAT_W3C()) {
-        publish_json(__service_config.machine_topic, machine_description_json(json), true);
         set_W3CJSON_callback(mqtt_print_json);
       } else if(IS_FORMAT_SPADE_JSON()) {
-        publish_json(__service_config.machine_topic, machine_description_spade_json(), true);
         set_SPADEJSON_callback(mqtt_print_json);
       }
     }else if(IS_CONFIG_LOG()){
       _init_logs();
       if (IS_FORMAT_W3C()) {
-        log_print(machine_description_json(json));
         set_W3CJSON_callback(log_print);
       }else if (IS_FORMAT_SPADE_JSON()) {
-        log_print(machine_description_spade_json());
         set_SPADEJSON_callback(log_print);
       }
     } else if(IS_CONFIG_UNIX()) {
       _init_unix();
       if (IS_FORMAT_W3C()) {
-        send_json(machine_description_json(json));
         set_W3CJSON_callback(send_json);
       } else if(IS_FORMAT_SPADE_JSON()) {
-        send_json(machine_description_spade_json());
         set_SPADEJSON_callback(send_json);
       }
     } else if(IS_CONFIG_FIFO()) {
       _init_fifo();
       if (IS_FORMAT_W3C()) {
-        write_fifo_json(machine_description_json(json));
         set_W3CJSON_callback(write_fifo_json);
       } else if(IS_FORMAT_SPADE_JSON()) {
-        write_fifo_json(machine_description_spade_json());
         set_SPADEJSON_callback(write_fifo_json);
       }
     }
