@@ -61,6 +61,9 @@ void w3c_influenced(struct relation_struct* relation){
   append_influenced(influenced_to_json(relation));
 }
 
+void w3c_associated(struct relation_struct* relation){
+  append_associated(associated_to_json(relation));
+}
 
 void w3c_proc(struct proc_prov_struct* proc){
   append_entity(proc_to_json(proc));
@@ -147,6 +150,9 @@ void spade_influenced(struct relation_struct* relation){
   spade_json_append(influenced_to_spade_json(relation));
 }
 
+void spade_associated(struct relation_struct* relation){
+  spade_json_append(associated_to_spade_json(relation));
+}
 
 void spade_proc(struct proc_prov_struct* proc){
     spade_json_append(proc_to_spade_json(proc));
@@ -224,6 +230,7 @@ struct provenance_ops w3c_ops = {
   .log_used=&w3c_used,
   .log_informed=&w3c_informed,
   .log_influenced=&w3c_influenced,
+  .log_associated=&w3c_associated,
   .log_proc=&w3c_proc,
   .log_task=&w3c_task,
   .log_inode=&w3c_inode,
@@ -251,6 +258,7 @@ struct provenance_ops spade_json_ops = {
   .log_used=&spade_used,
   .log_informed=&spade_informed,
   .log_influenced=&spade_influenced,
+  .log_associated=&spade_associated,
   .log_proc=&spade_proc,
   .log_task=&spade_task,
   .log_inode=&spade_inode,
@@ -277,6 +285,8 @@ struct provenance_ops ops_null = {
   .log_generated=NULL,
   .log_used=NULL,
   .log_informed=NULL,
+  .log_influenced=NULL,
+  .log_associated=NULL,
   .log_proc=NULL,
   .log_task=NULL,
   .log_inode=NULL,
