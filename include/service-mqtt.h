@@ -36,10 +36,8 @@ static inline void init_mqtt(void){
     exit(rc);
   }
   snprintf(__service_config.provenance_topic, MAX_TOPIC_LENGTH, "camflow/provenance/%u", machine_id);
-  snprintf(__service_config.machine_topic, MAX_TOPIC_LENGTH, "camflow/machines/%u", machine_id);
   snprintf(__service_config.client_id, MAX_MQTT_CLIENT_ID_LENGTH, "%u", machine_id); // should be no more than 23
   syslog(LOG_INFO, "Provenance topic: %s.", __service_config.provenance_topic);
-  syslog(LOG_INFO, "Machine topic: %s.", __service_config.machine_topic);
   syslog(LOG_INFO, "Address: %s.", __service_config.address);
   MQTTClient_create(&__service_client,
     __service_config.address,

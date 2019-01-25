@@ -35,7 +35,6 @@ typedef struct{
   char output[MAX_OUTPUT_LENGTH];
   char format[MAX_FORMAT_LENGTH];
   char provenance_topic[MAX_TOPIC_LENGTH];
-  char machine_topic[MAX_TOPIC_LENGTH];
   char client_id[MAX_MQTT_CLIENT_ID_LENGTH];
 } configuration;
 
