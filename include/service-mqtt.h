@@ -35,7 +35,7 @@ static inline void init_mqtt(void){
     syslog(LOG_ERR, "Failed retrieving machine ID.");
     exit(rc);
   }
-  snprintf(__service_config.provenance_topic, MAX_TOPIC_LENGTH, "camflow/provenance/%u", machine_id);
+  snprintf(__service_config.provenance_topic, MAX_TOPIC_LENGTH, "%s%u", __service_config.provenance_topic_prefix, machine_id);
   snprintf(__service_config.client_id, MAX_MQTT_CLIENT_ID_LENGTH, "%u", machine_id); // should be no more than 23
   syslog(LOG_INFO, "Provenance topic: %s.", __service_config.provenance_topic);
   syslog(LOG_INFO, "Address: %s.", __service_config.address);
