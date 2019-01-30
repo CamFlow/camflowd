@@ -36,7 +36,7 @@ typedef struct{
   char output[MAX_OUTPUT_LENGTH];
   char format[MAX_FORMAT_LENGTH];
   char provenance_topic[MAX_TOPIC_LENGTH];
-  char machine_topic[MAX_TOPIC_LENGTH];
+  char provenance_topic_prefix[MAX_TOPIC_LENGTH];
   char client_id[MAX_MQTT_CLIENT_ID_LENGTH];
 } configuration;
 
@@ -62,6 +62,8 @@ static int handler(void* user, const char* section, const char* name,
       pconfig->qos = atoi(value);
     }else if (MATCH("mqtt", "address")) {
       strncpy(pconfig->address, value, PATH_MAX);
+    }else if (MATCH("mqtt", "topic")) {
+      strncpy(pconfig->provenance_topic_prefix, value, MAX_TOPIC_LENGTH);
     }else if(MATCH("mqtt", "username")){
       strncpy(pconfig->username, value, 1024);
     }else if(MATCH("mqtt", "password")){

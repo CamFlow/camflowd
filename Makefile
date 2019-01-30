@@ -1,4 +1,4 @@
-version=0.2.2
+version=0.2.3
 CCC = gcc
 
 all:
@@ -48,8 +48,17 @@ rpm:
 	mkdir -p output
 	cp ~/rpmbuild/RPMS/x86_64/* ./output
 
-publish:
+deb:
+	sudo alien output/camflowd-$(version)-1.x86_64.rpm
+	cp *.deb ./output
+
+publish_rpm:
 	cd ./output && package_cloud push camflow/provenance/fedora/27 camflowd-$(version)-1.x86_64.rpm
+
+publish_deb:
+	cd ./output && package_cloud push camflow/provenance/ubuntu/bionic camflowd_$(version)-2_amd64.deb
+
+publish: publish_rpm publish_deb
 
 
 restart:
