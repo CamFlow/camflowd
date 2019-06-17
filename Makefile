@@ -53,7 +53,7 @@ deb:
 	cp *.deb ./output
 
 publish_rpm:
-	cd ./output && package_cloud push camflow/provenance/fedora/27 camflowd-$(version)-1.x86_64.rpm
+	cd ./output && package_cloud push camflow/provenance/fedora/29 camflowd-$(version)-1.x86_64.rpm
 
 publish_deb:
 	cd ./output && package_cloud push camflow/provenance/ubuntu/bionic camflowd_$(version)-2_amd64.deb
