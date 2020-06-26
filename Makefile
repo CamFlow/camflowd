@@ -5,7 +5,7 @@ all:
 	cd ./src && $(MAKE) all
 
 checkout:
-	mkdir -p build
+	mkdir -p ~/build
 	cd ~/build && git clone https://github.com/benhoyt/inih.git
 	cd ~/build/inih && git checkout tags/r47
 	cd ~/build/inih/extra && $(MAKE) -f Makefile.static default
