@@ -12,7 +12,7 @@ checkout:
 	cd ~/build && git clone https://github.com/eclipse/paho.mqtt.c.git
 	cd ~/build/paho.mqtt.c && git checkout tags/v1.1.0
 
-	PAHO_SRC= ~/build/paho.mqtt.c/src
+PAHO_SRC= ~/build/paho.mqtt.c/src
 PAHO_FILES = $(wildcard $(PAHO_SRC)/*.c)
 PAHO_EXEC = $(wildcard *.o)
 
