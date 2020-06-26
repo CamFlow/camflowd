@@ -6,13 +6,13 @@ all:
 
 checkout:
 	mkdir -p build
-	cd ./build && git clone https://github.com/benhoyt/inih.git
-	cd ./build/inih && git checkout tags/r47
-	cd ./build/inih/extra && $(MAKE) -f Makefile.static default
-	cd ./build && git clone https://github.com/eclipse/paho.mqtt.c.git
-	cd ./build/paho.mqtt.c && git checkout tags/v1.1.0
+	cd ~/build && git clone https://github.com/benhoyt/inih.git
+	cd ~/build/inih && git checkout tags/r47
+	cd ~/build/inih/extra && $(MAKE) -f Makefile.static default
+	cd ~/build && git clone https://github.com/eclipse/paho.mqtt.c.git
+	cd ~/build/paho.mqtt.c && git checkout tags/v1.1.0
 
-PAHO_SRC= ./build/paho.mqtt.c/src
+	PAHO_SRC= ~/build/paho.mqtt.c/src
 PAHO_FILES = $(wildcard $(PAHO_SRC)/*.c)
 PAHO_EXEC = $(wildcard *.o)
 
