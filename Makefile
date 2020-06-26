@@ -6,7 +6,7 @@ all:
 
 checkout:
 	mkdir -p ~/build
-	cd ~/build && git clone https://github.com/benhoyt/inih.git
+	if [ -d " ~/build/inih" ]; then cd ~/build && git clone https://github.com/benhoyt/inih.git; fi
 	cd ~/build/inih && git checkout tags/r47
 	cd ~/build/inih/extra && $(MAKE) -f Makefile.static default
 	cd ~/build && git clone https://github.com/eclipse/paho.mqtt.c.git
