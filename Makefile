@@ -6,10 +6,10 @@ all:
 
 checkout:
 	mkdir -p ~/build
-	if [ -d " ~/build/inih" ]; then cd ~/build && git clone https://github.com/benhoyt/inih.git; fi
+	test -d ~/build/inih || (cd ~/build && git clone https://github.com/benhoyt/inih.git)
 	cd ~/build/inih && git checkout tags/r47
 	cd ~/build/inih/extra && $(MAKE) -f Makefile.static default
-	cd ~/build && git clone https://github.com/eclipse/paho.mqtt.c.git
+	test -d ~/build/paho.mqtt.c || (cd ~/build && git clone https://github.com/eclipse/paho.mqtt.c.git)
 	cd ~/build/paho.mqtt.c && git checkout tags/v1.1.0
 
 PAHO_SRC= ~/build/paho.mqtt.c/src
