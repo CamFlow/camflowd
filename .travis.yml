@@ -6,7 +6,8 @@ before_install:
   - sudo apt-get update -qq
 
 script:
-  - echo hello
+  - make prepare
+  - make all
 
 notifications:
   slack: camflow:T3Umf9cAIwKnaxFEkjeZV7RM

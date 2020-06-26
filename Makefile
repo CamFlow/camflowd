@@ -69,4 +69,3 @@ clean:
 	cd ./src && $(MAKE) clean
 	rm -rf *.o
 	rm -rf output
-	rm -rf build
