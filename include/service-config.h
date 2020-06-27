@@ -16,8 +16,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-#include "ini.h"
+#include <ini.h>
 
 #define CONFIG_PATH "/etc/camflowd.ini"
 #define MAX_TOPIC_LENGTH 256

@@ -19,8 +19,8 @@
 #include <sys/syscall.h>
 #include <pthread.h>
 #include <syslog.h>
+#include <MQTTClient.h>
 
-#include "MQTTClient.h"
 #include "service-config.h"
 
 #define gettid() syscall(SYS_gettid)
