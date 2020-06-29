@@ -20,7 +20,9 @@
 
 ### v0.3.0
 ```
+- Change how dependencies are managed.
 - Spade as default output format.
+- Support fedora 32.
 ```
 
 ### v0.2.6
