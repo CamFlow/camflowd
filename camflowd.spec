@@ -6,7 +6,7 @@ Group: audit/camflow
 License: GPLv2
 Source: %{expand:%%(pwd)}
 BuildRoot: %{_topdir}/BUILD/%{name}-%{version}-%{release}
-Requires: openssl, zlib, glibc
+Requires: openssl, zlib, glibc, paho-c
 
 %description
 %{summary}
