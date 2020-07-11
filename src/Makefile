@@ -1,7 +1,7 @@
-INCLUDES = -I../build/inih -I../include -I../build/paho.mqtt.c/src
+INCLUDES = -I../include
 CCFLAGS = -g -O2 -fpic
 CCC = gcc
-LIB = -lprovenance  ../output/libpaho-mqtt3c.a -lpthread ../build/inih/extra/libinih.a -lz
+LIB = -lprovenance -lpthread -linih -lz -lpaho-mqtt3c
 .SUFFIXES: .c
 
 all:

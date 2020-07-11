@@ -1,37 +1,11 @@
-version=0.2.6
+version=0.3.0
 CCC = gcc
 
 all:
 	cd ./src && $(MAKE) all
 
-checkout:
-	mkdir -p build
-	cd ./build && git clone https://github.com/benhoyt/inih.git
-	cd ./build/inih && git checkout tags/r47
-	cd ./build/inih/extra && $(MAKE) -f Makefile.static default
-	cd ./build && git clone https://github.com/eclipse/paho.mqtt.c.git
-	cd ./build/paho.mqtt.c && git checkout tags/v1.1.0
-
-PAHO_SRC= ./build/paho.mqtt.c/src
-PAHO_FILES = $(wildcard $(PAHO_SRC)/*.c)
-PAHO_EXEC = $(wildcard *.o)
-
-release.version = 1.1.0
-SED_COMMAND = sed \
-	-e "s/@CLIENT_VERSION@/${release.version}/g" \
-	-e "s/@BUILD_TIMESTAMP@/$(shell date)/g"
-
-build_paho:
-	mkdir -p output
-	$(SED_COMMAND) <$(PAHO_SRC)/VersionInfo.h.in >$(PAHO_SRC)/VersionInfo.h
-	$(CCC) -c -g -fPIC -Os -Wall -I$(PAHO_SRC) $(PAHO_FILES)
-	ar rvs output/libpaho-mqtt3c.a $(PAHO_EXEC)
-	$(CCC) -c -g -fPIC -Os -Wall -I$(PAHO_SRC) $(PAHO_FILES)
-	ar rvs output/libpaho-mqtt3c.a $(PAHO_EXEC)
-
-prepare: checkout
-	$(MAKE) build_paho
-	$(MAKE) build_paho
+prepare:
+	echo 'Nothing to do.'
 
 mosquitto:
 	sudo cp -f ./mosquitto.conf /etc/mosquitto/mosquitto.conf
@@ -54,7 +28,7 @@ deb:
 	cp *.deb ./output
 
 publish_rpm:
-	cd ./output && package_cloud push camflow/provenance/fedora/31 camflowd-$(version)-1.x86_64.rpm
+	cd ./output && package_cloud push camflow/provenance/fedora/32 camflowd-$(version)-1.x86_64.rpm
 
 publish_deb:
 	cd ./output && package_cloud push camflow/provenance/ubuntu/bionic camflowd_$(version)-2_amd64.deb
@@ -69,4 +43,3 @@ clean:
 	cd ./src && $(MAKE) clean
 	rm -rf *.o
 	rm -rf output
-	rm -rf build

@@ -1,12 +1,12 @@
 Summary: CamFlow publisher service
 Name: camflowd
-Version: 0.2.6
+Version: 0.3.0
 Release: 1
 Group: audit/camflow
 License: GPLv2
 Source: %{expand:%%(pwd)}
 BuildRoot: %{_topdir}/BUILD/%{name}-%{version}-%{release}
-Requires: openssl, zlib, glibc
+Requires: openssl, zlib, glibc, paho-c
 
 %description
 %{summary}
