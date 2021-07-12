@@ -319,11 +319,12 @@ void term(int signum)
 {
   terminate = 1;
   syslog(LOG_INFO, "Shutdown signal received.");
-  if (!IS_CONFIG_NULL())
-    flush_json();
   provenance_relay_stop();
-  if(IS_CONFIG_MQTT())
+  syslog(LOG_INFO, "Relay stopped.");
+  if(IS_CONFIG_MQTT()) {
     stop_mqtt();
+    syslog(LOG_INFO, "MQTT stopped.");
+  }
   syslog(LOG_INFO, "Service terminated.");
   exit(0);
 }
