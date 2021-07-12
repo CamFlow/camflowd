@@ -1,10 +1,11 @@
 /*
 *
-* Author: Thomas Pasquier <thomas.pasquier@bristol.ac.uk>
+* Author: Thomas Pasquier <tfjmp@cs.ubc.ca>
 *
 * Copyright (C) 2016-2017 Harvard University
 * Copyright (C) 2017-2018 University of Cambridge
-* Copyright (C) 2018-2019 University of Bristol
+* Copyright (C) 2018-2021 University of Bristol
+* Copyright (C) 2021 University of British Columbia
 *
 * This program is free software; you can redistribute it and/or modify
 * it under the terms of the GNU General Public License version 2, as
