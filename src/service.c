@@ -394,11 +394,11 @@ int main(void)
     }
 
     if (IS_CONFIG_NULL())
-      rc = provenance_relay_register(&ops_null, NULL);
+      rc = provenance_relay_register(&ops_null);
     else if(IS_FORMAT_W3C())
-      rc = provenance_relay_register(&w3c_ops, NULL);
+      rc = provenance_relay_register(&w3c_ops);
     else if(IS_FORMAT_SPADE_JSON())
-      rc = provenance_relay_register(&spade_json_ops, NULL);
+      rc = provenance_relay_register(&spade_json_ops);
 
     if(rc){
       syslog(LOG_ERR, "Failed registering audit operation.");
