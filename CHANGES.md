@@ -24,6 +24,7 @@
 ### v0.3.3
 ```
 - Switch back to single relay channel support.
+- Support fedora 35.
 ```
 
 ### v0.3.2
