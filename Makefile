@@ -1,4 +1,4 @@
-version=0.3.2
+version=0.3.3
 CCC = gcc
 
 all:
@@ -28,7 +28,7 @@ deb:
 	cp *.deb ./output
 
 publish_rpm:
-	cd ./output && package_cloud push camflow/provenance/fedora/33 camflowd-$(version)-1.x86_64.rpm
+	cd ./output && package_cloud push camflow/provenance/fedora/35 camflowd-$(version)-1.x86_64.rpm
 
 publish_deb:
 	cd ./output && package_cloud push camflow/provenance/ubuntu/bionic camflowd_$(version)-2_amd64.deb
